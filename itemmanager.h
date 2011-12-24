@@ -2,17 +2,32 @@
 #define ITEMMANAGER_H
 
 #include <QObject>
+#include <QVector>
+#include <QDebug>
+#include "chip.h"
 
 class ItemManager : public QObject
 {
     Q_OBJECT
 public:
-    explicit ItemManager(QObject *parent = 0);
-    
+    static ItemManager *Instance();
+
+    int AddItem(Chip *);
+
+    void LoadToFile();
+
 signals:
-    
+
 public slots:
-    
+    void SaveToFile();
+
+private:
+    ItemManager();
+    ItemManager(const ItemManager&);
+    ItemManager& operator =(const ItemManager&);
+    QVector<Chip *> items;
+    static ItemManager* m_instance;
+
 };
 
 #endif // ITEMMANAGER_H

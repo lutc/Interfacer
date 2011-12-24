@@ -87,7 +87,7 @@ void Chip::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
     if (option->state & QStyle::State_MouseOver)
         fillColor = fillColor.light(125);
 
-    const qreal lod = option->levelOfDetailFromTransform(painter->worldTransform());
+//    const qreal lod = option->levelOfDetailFromTransform(painter->worldTransform());
 
     QPen oldPen = painter->pen();
     QPen pen = oldPen;

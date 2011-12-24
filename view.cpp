@@ -76,20 +76,22 @@ View::View(QWidget *parent)
     openGlButton->setEnabled(false);
 #endif
 
-    addButtonButton = new QToolButton;
-    addButtonButton->setText("Add button");
-    addTogleButtonButton = new QToolButton;
-    addTogleButtonButton->setText("Add TogleButton");
-    addTextButton = new QToolButton;
-    addTextButton->setText("Add Text");
+    btnAddButton = new QToolButton;
+    btnAddButton->setText("Add button");
+    btnAddTogleButton = new QToolButton;
+    btnAddTogleButton->setText("Add TogleButton");
+    btnAddText = new QToolButton;
+    btnAddText->setText("Add Text");
+    btnSave = new QToolButton;
+    btnSave->setText("Save");
 
-    labelLayout->addWidget(addButtonButton);
-    labelLayout->addWidget(addTogleButtonButton);
-    labelLayout->addWidget(addTextButton);
+    labelLayout->addWidget(btnAddButton);
+    labelLayout->addWidget(btnAddTogleButton);
+    labelLayout->addWidget(btnAddText);
     labelLayout->addStretch();
     labelLayout->addWidget(antialiasButton);
     labelLayout->addWidget(openGlButton);
-//    labelLayout->addWidget(printButton);
+    labelLayout->addWidget(btnSave);
 
     QGridLayout *topLayout = new QGridLayout;
     topLayout->addLayout(labelLayout, 0, 0);
@@ -99,9 +101,10 @@ View::View(QWidget *parent)
 
     connect(antialiasButton, SIGNAL(toggled(bool)), this, SLOT(toggleAntialiasing()));
     connect(openGlButton, SIGNAL(toggled(bool)), this, SLOT(toggleOpenGL()));
-    connect(addButtonButton, SIGNAL(clicked()), this, SLOT(AddButton()));
-    connect(addTogleButtonButton, SIGNAL(clicked()), this, SLOT(AddTogleButton()));
-    connect(addTextButton, SIGNAL(clicked()), this, SLOT(AddText()));
+    connect(btnAddButton, SIGNAL(clicked()), this, SLOT(AddButton()));
+    connect(btnAddTogleButton, SIGNAL(clicked()), this, SLOT(AddTogleButton()));
+    connect(btnAddText, SIGNAL(clicked()), this, SLOT(AddText()));
+    connect (btnSave, SIGNAL(clicked()), ItemManager::Instance(), SLOT(SaveToFile()));
 
 //    connect(graphicsView, SIGNAL())
 
@@ -163,10 +166,15 @@ void View::AddTogleButton()
     AddItem(Chip::toglebutton, 0, 0);
 }
 
-
 void View::AddItem(Chip::type t, int x, int y)
 {
     QGraphicsItem *item = new Chip(t, x, y);
 //    item->setPos(QPointF(x, y));
     graphicsView->scene()->addItem(item);
+    ItemManager::Instance()->AddItem((Chip*)item);
+}
+
+void View::Save()
+{
+
 }

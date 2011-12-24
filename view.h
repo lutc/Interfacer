@@ -45,6 +45,8 @@
 #include <QFrame>
 
 #include "chip.h"
+#include "itemmanager.h"
+
 QT_FORWARD_DECLARE_CLASS(QGraphicsView)
 QT_FORWARD_DECLARE_CLASS(QLabel)
 QT_FORWARD_DECLARE_CLASS(QSlider)
@@ -66,6 +68,9 @@ private slots:
     void AddText();
     void AddTogleButton();
 
+    void Save();
+
+
 private:
     QGraphicsView *graphicsView;
 
@@ -73,9 +78,10 @@ private:
     QToolButton *antialiasButton;
 
 
-    QToolButton *addButtonButton;
-    QToolButton *addTogleButtonButton;
-    QToolButton *addTextButton;
+    QToolButton *btnAddButton;
+    QToolButton *btnAddTogleButton;
+    QToolButton *btnAddText;
+    QToolButton *btnSave;
 
     void AddItem(Chip::type, int, int);
 };
