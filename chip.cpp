@@ -69,13 +69,13 @@ Chip::Chip(const type t, int x, int y)
 
 QRectF Chip::boundingRect() const
 {
-    return QRectF(0, 0, 110, 70);
+    return QRectF(0, 0, 200, 50);
 }
 
 QPainterPath Chip::shape() const
 {
     QPainterPath path;
-    path.addRect(0, 0, 110, 70);
+    path.addRect(0, 0, 200, 50);
     return path;
 }
 
@@ -99,7 +99,7 @@ void Chip::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
     QBrush b = painter->brush();
     painter->setBrush(QBrush(fillColor.dark(option->state & QStyle::State_Sunken ? 120 : 100)));
 
-    painter->drawRect(QRect(0, 0, 79, 39));
+    painter->drawRect(QRect(0, 0, 200, 50));
     painter->setBrush(b);
 
     if (currentType == text)
@@ -108,6 +108,63 @@ void Chip::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
     }
 return;
 
+}
+
+QString Chip::Save()
+{
+    QString result = QString(
+    "Left = %0\n" \
+    "Top = %1\n" \
+    "Width = 200\n" \
+    "Height = 50\n" \
+
+    "Font = Images/arial.ttf\n" \
+    "FontSize = 20\n" \
+    "Color = white\n").arg(scenePos().x()).arg(scenePos().y());
+
+    switch (currentType)
+    {
+    case text:
+        result = QString (
+            "[Text]\n"\
+            "Pages = Main\n" \
+
+            "Align = left\n") + result +
+
+        QString ("DefaultText = Projector\n\n");
+        break;
+
+    case button:
+        result = QString (
+            "[Button]\n"\
+            "Pages = Main\n" \
+
+            "Caption = CAPTION\n") + result +
+
+        QString ("UpImage = Images/menu_btn.png\n" \
+                 "DownImage = Images/menu_light_btn.png\n" \
+                 "HeldImage = Images/menu_light_btn.png\n" \
+
+                 "OnClick  = Command Mitsubishi poweron\n\n");
+        break;
+    case toglebutton:
+        result = QString (
+            "[TogleButton]\n"\
+            "Pages = Main\n" \
+
+            "Caption = CAPTION\n") + result +
+
+        QString ("UpImage = Images/menu_btn.png\n" \
+                 "DownImage = Images/menu_light_btn.png\n" \
+                 "HeldImage = Images/menu_light_btn.png\n" \
+
+                 "OnUp  = Command Mitsubishi poweron\n" \
+                 "OnDown  = Command Mitsubishi poweron\n\n");
+        break;
+    }
+
+
+    return result;
 }
 
 void Chip::mousePressEvent(QGraphicsSceneMouseEvent *event)

@@ -93,6 +93,9 @@ View::View(QWidget *parent)
     labelLayout->addWidget(openGlButton);
     labelLayout->addWidget(btnSave);
 
+    tabwidget = new QTabWidget;
+
+
     QGridLayout *topLayout = new QGridLayout;
     topLayout->addLayout(labelLayout, 0, 0);
     topLayout->addWidget(graphicsView, 1, 0);

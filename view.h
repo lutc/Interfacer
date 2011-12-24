@@ -51,6 +51,7 @@ QT_FORWARD_DECLARE_CLASS(QGraphicsView)
 QT_FORWARD_DECLARE_CLASS(QLabel)
 QT_FORWARD_DECLARE_CLASS(QSlider)
 QT_FORWARD_DECLARE_CLASS(QToolButton)
+QT_FORWARD_DECLARE_CLASS(QTabWidget)
 
 class View : public QFrame
 {
@@ -82,6 +83,7 @@ private:
     QToolButton *btnAddTogleButton;
     QToolButton *btnAddText;
     QToolButton *btnSave;
+    QTabWidget* tabwidget;
 
     void AddItem(Chip::type, int, int);
 };
