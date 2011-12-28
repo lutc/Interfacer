@@ -10,7 +10,7 @@ ItemManager::ItemManager() :
 {
 }
 
-int ItemManager::AddItem(Chip * chip)
+int ItemManager::AddItem(CommonItemMECS * chip)
 {
     items.append(chip);
     return items.count() - 1;
@@ -41,7 +41,7 @@ void ItemManager::SaveToFile()
             "Name = Main\n" \
             "Background = Images/aqua_back.png\n\n";
     out << prepend;
-    foreach (Chip *chip, items) {
+    foreach (CommonItemMECS *chip, items) {
         out << chip->Save();
     }
 

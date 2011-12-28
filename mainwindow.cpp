@@ -44,7 +44,7 @@
 
 #include "view.h"
 #include "project.h"
-#include "chip.h"
+#include "commonitemmecs.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QWidget(parent)
@@ -77,9 +77,9 @@ void MainWindow::populateScene()
     int sceneHeight = 700;
     int sceneWidth = 1200;
     scene->addRect(0, 0, sceneWidth, sceneHeight);
-    for (int i = Chip::stepOfGrid; i < sceneWidth; i += Chip::stepOfGrid)
+    for (int i = CommonItemMECS::stepOfGrid; i < sceneWidth; i += CommonItemMECS::stepOfGrid)
         scene->addLine(i, 0, i, sceneHeight);
-    for (int i = Chip::stepOfGrid; i < sceneHeight; i += Chip::stepOfGrid)
+    for (int i = CommonItemMECS::stepOfGrid; i < sceneHeight; i += CommonItemMECS::stepOfGrid)
         scene->addLine(0, i, sceneWidth, i);
 return;
 //    QImage image(":/qt4logo.png");

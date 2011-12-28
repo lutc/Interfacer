@@ -48,6 +48,9 @@
 
 #include <qmath.h>
 
+#include "buttonmesc.h"
+#include"textmesc.h"
+
 View::View(QWidget *parent)
     : QFrame(parent)
 {
@@ -157,23 +160,36 @@ void View::toggleAntialiasing()
 
 void View::AddButton()
 {
-    AddItem(Chip::button, 0, 0);
+    AddItem(CommonItemMECS::button, 0, 0);
 }
 
 void View::AddText()
 {
-    AddItem(Chip::text, 0, 0);
+    AddItem(CommonItemMECS::text, 0, 0);
 }
 
 void View::AddTogleButton()
 {
-    AddItem(Chip::toglebutton, 0, 0);
+    AddItem(CommonItemMECS::toglebutton, 0, 0);
 }
 
-void View::AddItem(Chip::type t, int x, int y)
+void View::AddItem(CommonItemMECS::ItemTypes type, int x, int y)
 {
-    QGraphicsItem *item = new Chip(t, x, y);
-//    item->setPos(QPointF(x, y));
+    QGraphicsItem *item;
+    switch (type)
+    {
+    case CommonItemMECS::button:
+        item = new ButtonMESC(x, y);
+        break;
+
+    case CommonItemMECS::text:
+        item = new TextMESC(x, y);
+        break;
+
+    default:
+        return;
+    }
+
     graphicsView->scene()->addItem(item);
-    ItemManager::Instance()->AddItem((Chip*)item);
+    ItemManager::Instance()->AddItem((CommonItemMECS*)item);
 }

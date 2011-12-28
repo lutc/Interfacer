@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QVector>
 #include <QDebug>
-#include "chip.h"
+#include "commonitemmecs.h"
 
 class ItemManager : public QObject
 {
@@ -12,7 +12,7 @@ class ItemManager : public QObject
 public:
     static ItemManager *Instance();
 
-    int AddItem(Chip *);
+    int AddItem(CommonItemMECS *);
 
     void LoadFromFile();
 
@@ -25,7 +25,7 @@ private:
     ItemManager();
     ItemManager(const ItemManager&);
     ItemManager& operator =(const ItemManager&);
-    QVector<Chip *> items;
+    QVector<CommonItemMECS *> items;
     static ItemManager* m_instance;
 
 };

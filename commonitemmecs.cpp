@@ -39,56 +39,39 @@
 **
 ****************************************************************************/
 
-#include "chip.h"
+#include "commonitemmecs.h"
 
 #include <QtGui>
 
 #include "itemproperties.h"
 #include "project.h"
 
-int Chip::stepOfGrid = 25;
+int CommonItemMECS::stepOfGrid = 25;
 
-Chip::Chip(const type t, int x, int y)
-    :m_width(200), m_height(50)
+CommonItemMECS::CommonItemMECS(int x, int y):
+    m_width(200), m_height(50)
 {
-    switch (t)
-    {
-    case button:
-        this->color = QColor(255, 0, 0);
-        break;
-    case toglebutton:
-        this->color = QColor(0, 255, 0);
-        break;
-    case text:
-        this->color = QColor(0, 0, 255);
-        break;
-    case indicator:
-        this->color = QColor(200, 0, 200);
-        break;
-    }
-    currentType = t;
     this->x = x;
     this->y = y;
-    this->color = color;
     setZValue((x + y) % 2);
 
     setFlags(ItemIsSelectable | ItemIsMovable);
     setAcceptsHoverEvents(true);
 }
 
-QRectF Chip::boundingRect() const
+QRectF CommonItemMECS::boundingRect() const
 {
     return QRectF(0, 0, m_width, m_height);
 }
 
-QPainterPath Chip::shape() const
+QPainterPath CommonItemMECS::shape() const
 {
     QPainterPath path;
     path.addRect(boundingRect());
     return path;
 }
 
-void Chip::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void CommonItemMECS::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     Q_UNUSED(widget);
 
@@ -113,7 +96,14 @@ void Chip::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
     }
     else
     {
-        painter->drawImage(boundingRect(), *m_backGroundImageCache);
+        QPen oldPenBorder = painter->pen();
+        QPen *penBorder = new QPen(Qt::red);
+        penBorder->setWidth(3);
+        penBorder->setStyle(Qt::DotLine);
+        painter->setPen(*penBorder);
+        painter->drawRect(boundingRect());
+        painter->drawImage(boundingRect().topLeft(), *m_backGroundImageCache);
+        painter->setPen(oldPenBorder);
     }
 
     painter->setPen(pen);
@@ -124,28 +114,22 @@ return;
 
 }
 
-Chip::type Chip::getType()
-{
-    return currentType;
-}
-
-
-void Chip::setWidth(qreal width)
+void CommonItemMECS::setWidth(qreal width)
 {
     m_width = width;
 }
 
-void Chip::setHeight(qreal height)
+void CommonItemMECS::setHeight(qreal height)
 {
     m_height = height;
 }
 
-void Chip::setText(QString newText)
+void CommonItemMECS::setText(QString newText)
 {
     m_text = newText;
 }
 
-void Chip::setBackgroundImage(QString newImage)
+void CommonItemMECS::setBackgroundImage(QString newImage)
 {
     m_backgroundImage = newImage;
     if (m_backgroundImage.isEmpty())
@@ -156,61 +140,38 @@ void Chip::setBackgroundImage(QString newImage)
     m_backGroundImageCache = new QImage(backgroundImagePath);
 }
 
-qreal Chip::getWidth()
+qreal CommonItemMECS::getWidth()
 {
     return m_width;
 }
 
-qreal Chip::getHeight()
+qreal CommonItemMECS::getHeight()
 {
     return m_height;
 }
 
-QString Chip::getText()
+QString CommonItemMECS::getText()
 {
     return m_text;
 }
 
-QString Chip::getBackgroundImage()
+QString CommonItemMECS::getBackgroundImage()
 {
     return m_backgroundImage;
 }
 
-QString Chip::Save()
+QString CommonItemMECS::Save()
 {
     QString result = QString(
-    "Left = %0\n" \
-    "Top = %1\n" \
+        "Left = %0\n" \
+        "Top = %1\n" \
 
-    "Font = Images/arial.ttf\n" \
-    "FontSize = 20\n" \
-                "Color = white\n").arg(scenePos().x()).arg(scenePos().y());
+        "Font = Images/arial.ttf\n" \
+        "FontSize = 20\n" \
+        "Color = white\n").arg(scenePos().x()).arg(scenePos().y());
 
-    switch (currentType)
+    /*switch (currentType)
     {
-    case text:
-        result = QString (
-            "[Text]\n"\
-            "Pages = Main\n" \
-
-            "Align = left\n") + result +
-        QString ("Width = %2\nHeight = %3\nDefaultText = %4\n\n").arg(m_width).
-                arg(m_height).arg(getText());
-        break;
-
-    case button:
-        result = QString (
-            "[Button]\n"\
-            "Pages = Main\n" \
-
-            "Caption = %1\n").arg(getText()) + result +
-
-        QString ("UpImage = Images/%0\n" \
-                 "DownImage = Images/menu_light_btn.png\n" \
-                 "HeldImage = Images/menu_light_btn.png\n" \
-
-                 "OnClick  = Command Mitsubishi poweron\n\n").arg(getBackgroundImage());
-        break;
     case toglebutton:
         result = QString (
             "[TogleButton]\n"\
@@ -227,18 +188,18 @@ QString Chip::Save()
                 .arg(getBackgroundImage());
         break;
     }
-
+*/
 
     return result;
 }
 
-void Chip::mousePressEvent(QGraphicsSceneMouseEvent *event)
+void CommonItemMECS::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     QGraphicsItem::mousePressEvent(event);
     update();
 }
 
-void Chip::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+void CommonItemMECS::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     if (event->modifiers() & Qt::ShiftModifier) {
         stuff << event->pos();
@@ -248,7 +209,7 @@ void Chip::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     QGraphicsItem::mouseMoveEvent(event);
 }
 
-int Chip::snapToGrid(qreal position)
+int CommonItemMECS::snapToGrid(qreal position)
 {
     int delimiter = (int)position /  stepOfGrid;
     if ((position /  stepOfGrid) - delimiter >= 0.5)
@@ -256,7 +217,7 @@ int Chip::snapToGrid(qreal position)
     return delimiter * stepOfGrid;
 }
 
-void Chip::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+void CommonItemMECS::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
     QGraphicsItem::mouseReleaseEvent(event);
 
@@ -265,7 +226,7 @@ void Chip::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     update();
 }
 
-void Chip::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *)
+void CommonItemMECS::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *)
 {
     ItemProperties *properties = new ItemProperties(*this);
     properties->setWindowModality(Qt::ApplicationModal);

@@ -44,7 +44,7 @@
 
 #include <QFrame>
 
-#include "chip.h"
+#include "commonitemmecs.h"
 #include "itemmanager.h"
 
 QT_FORWARD_DECLARE_CLASS(QGraphicsView)
@@ -85,7 +85,7 @@ private:
     QToolButton *btnSave;
     QTabWidget* tabwidget;
 
-    void AddItem(Chip::type, int, int);
+    void AddItem(CommonItemMECS::ItemTypes, int, int);
 };
 
 #endif

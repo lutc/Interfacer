@@ -44,20 +44,21 @@
 
 #include <QtGui/QColor>
 #include <QtGui/QGraphicsItem>
+#include <QGridLayout>
 
-class Chip : public QGraphicsItem
+class CommonItemMECS : public QGraphicsItem
 {
 public:
+    enum ItemTypes{button, toglebutton, text, indicator};
+
     static int stepOfGrid;
 
-    enum type{button, toglebutton, text, indicator};
-    Chip(const  type t, int x, int y);
+    CommonItemMECS(int x, int y);
 
     QRectF boundingRect() const;
     QPainterPath shape() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *item, QWidget *widget);
-    QString Save();
-    Chip::type getType();
+    virtual QString Save();
 
     void setWidth(qreal );
     void setHeight(qreal );
@@ -69,16 +70,22 @@ public:
     QString getText( );
     QString getBackgroundImage( );
 
+    virtual QString GetName() = 0;
+    virtual QString GetTextName() = 0;
+    virtual QGridLayout *GetPropertiesWidgets() = 0;
+    virtual void AcceptWidgetsProperties() = 0;
+
 protected:
+    QColor color;
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *);
 
+
 private:
     int x, y;
-    QColor color;
-    type currentType;
+
     QList<QPointF> stuff;
 
     QString m_text;
