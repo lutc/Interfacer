@@ -1,6 +1,7 @@
 #include "itemmanager.h"
 #include <QMutex>
 #include <QFile>
+#include <QFileInfo>
 
 ItemManager* ItemManager::m_instance = 0;
 
@@ -30,6 +31,7 @@ ItemManager *ItemManager::Instance()
 
 void ItemManager::SaveToFile()
 {
+
     QFile file("interface");
     file.open(QIODevice::WriteOnly | QIODevice::Text);
     QTextStream out(&file);
@@ -43,10 +45,12 @@ void ItemManager::SaveToFile()
         out << chip->Save();
     }
 
+    QFileInfo *info = new QFileInfo(file);
+    qDebug() << "Saved to file" << info->absoluteFilePath();
     file.close();
 }
 
-void ItemManager::LoadToFile()
+void ItemManager::LoadFromFile()
 {
 
 }

@@ -43,7 +43,13 @@
 
 #include <QtGui>
 
+#include "itemproperties.h"
+#include "project.h"
+
+int Chip::stepOfGrid = 25;
+
 Chip::Chip(const type t, int x, int y)
+    :m_width(200), m_height(50)
 {
     switch (t)
     {
@@ -55,6 +61,9 @@ Chip::Chip(const type t, int x, int y)
         break;
     case text:
         this->color = QColor(0, 0, 255);
+        break;
+    case indicator:
+        this->color = QColor(200, 0, 200);
         break;
     }
     currentType = t;
@@ -69,13 +78,13 @@ Chip::Chip(const type t, int x, int y)
 
 QRectF Chip::boundingRect() const
 {
-    return QRectF(0, 0, 200, 50);
+    return QRectF(0, 0, m_width, m_height);
 }
 
 QPainterPath Chip::shape() const
 {
     QPainterPath path;
-    path.addRect(0, 0, 200, 50);
+    path.addRect(boundingRect());
     return path;
 }
 
@@ -87,8 +96,6 @@ void Chip::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
     if (option->state & QStyle::State_MouseOver)
         fillColor = fillColor.light(125);
 
-//    const qreal lod = option->levelOfDetailFromTransform(painter->worldTransform());
-
     QPen oldPen = painter->pen();
     QPen pen = oldPen;
     int width = 0;
@@ -96,18 +103,77 @@ void Chip::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
         width += 2;
 
     pen.setWidth(width);
+    pen.setColor(Qt::white);
     QBrush b = painter->brush();
-    painter->setBrush(QBrush(fillColor.dark(option->state & QStyle::State_Sunken ? 120 : 100)));
-
-    painter->drawRect(QRect(0, 0, 200, 50));
-    painter->setBrush(b);
-
-    if (currentType == text)
+    if (m_backgroundImage.isEmpty())
     {
-        painter->drawText(10, 20, "Text");
+        painter->setBrush(QBrush(fillColor.dark(option->state & QStyle::State_Sunken ? 120 : 100)));
+        painter->drawRect(boundingRect());
+        painter->setBrush(b);
     }
+    else
+    {
+        painter->drawImage(boundingRect(), *m_backGroundImageCache);
+    }
+
+    painter->setPen(pen);
+    painter->drawText(boundingRect(), Qt::AlignCenter, m_text);
+    painter->setPen(oldPen);
+
 return;
 
+}
+
+Chip::type Chip::getType()
+{
+    return currentType;
+}
+
+
+void Chip::setWidth(qreal width)
+{
+    m_width = width;
+}
+
+void Chip::setHeight(qreal height)
+{
+    m_height = height;
+}
+
+void Chip::setText(QString newText)
+{
+    m_text = newText;
+}
+
+void Chip::setBackgroundImage(QString newImage)
+{
+    m_backgroundImage = newImage;
+    if (m_backgroundImage.isEmpty())
+        return;
+    QString backgroundImagePath =
+            Project::PathToProject + Project::ImagesDirectory
+            + QString("/") + m_backgroundImage;
+    m_backGroundImageCache = new QImage(backgroundImagePath);
+}
+
+qreal Chip::getWidth()
+{
+    return m_width;
+}
+
+qreal Chip::getHeight()
+{
+    return m_height;
+}
+
+QString Chip::getText()
+{
+    return m_text;
+}
+
+QString Chip::getBackgroundImage()
+{
+    return m_backgroundImage;
 }
 
 QString Chip::Save()
@@ -115,12 +181,10 @@ QString Chip::Save()
     QString result = QString(
     "Left = %0\n" \
     "Top = %1\n" \
-    "Width = 200\n" \
-    "Height = 50\n" \
 
     "Font = Images/arial.ttf\n" \
     "FontSize = 20\n" \
-    "Color = white\n").arg(scenePos().x()).arg(scenePos().y());
+                "Color = white\n").arg(scenePos().x()).arg(scenePos().y());
 
     switch (currentType)
     {
@@ -130,8 +194,8 @@ QString Chip::Save()
             "Pages = Main\n" \
 
             "Align = left\n") + result +
-
-        QString ("DefaultText = Projector\n\n");
+        QString ("Width = %2\nHeight = %3\nDefaultText = %4\n\n").arg(m_width).
+                arg(m_height).arg(getText());
         break;
 
     case button:
@@ -139,27 +203,28 @@ QString Chip::Save()
             "[Button]\n"\
             "Pages = Main\n" \
 
-            "Caption = CAPTION\n") + result +
+            "Caption = %1\n").arg(getText()) + result +
 
-        QString ("UpImage = Images/menu_btn.png\n" \
+        QString ("UpImage = Images/%0\n" \
                  "DownImage = Images/menu_light_btn.png\n" \
                  "HeldImage = Images/menu_light_btn.png\n" \
 
-                 "OnClick  = Command Mitsubishi poweron\n\n");
+                 "OnClick  = Command Mitsubishi poweron\n\n").arg(getBackgroundImage());
         break;
     case toglebutton:
         result = QString (
             "[TogleButton]\n"\
             "Pages = Main\n" \
 
-            "Caption = CAPTION\n") + result +
+            "Caption = %1\n").arg(getText()) + result +
 
-        QString ("UpImage = Images/menu_btn.png\n" \
+        QString ("UpImage = Images/%0\n" \
                  "DownImage = Images/menu_light_btn.png\n" \
                  "HeldImage = Images/menu_light_btn.png\n" \
 
                  "OnUp  = Command Mitsubishi poweron\n" \
-                 "OnDown  = Command Mitsubishi poweron\n\n");
+                 "OnDown  = Command Mitsubishi poweron\n\n")
+                .arg(getBackgroundImage());
         break;
     }
 
@@ -183,13 +248,12 @@ void Chip::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     QGraphicsItem::mouseMoveEvent(event);
 }
 
-int snapToGrid(qreal position)
+int Chip::snapToGrid(qreal position)
 {
-    int stepOfSnap = 50;
-    int delimiter = (int)position /  stepOfSnap;
-    if ((position /  stepOfSnap) - delimiter >= 0.5)
+    int delimiter = (int)position /  stepOfGrid;
+    if ((position /  stepOfGrid) - delimiter >= 0.5)
         delimiter++;
-    return delimiter * stepOfSnap;
+    return delimiter * stepOfGrid;
 }
 
 void Chip::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
@@ -199,4 +263,11 @@ void Chip::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     setX(snapToGrid(scenePos().x()));
     setY(snapToGrid(scenePos().y()));
     update();
+}
+
+void Chip::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *)
+{
+    ItemProperties *properties = new ItemProperties(*this);
+    properties->setWindowModality(Qt::ApplicationModal);
+    properties->show();
 }

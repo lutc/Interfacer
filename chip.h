@@ -48,25 +48,46 @@
 class Chip : public QGraphicsItem
 {
 public:
-    enum type{button, toglebutton, text};
+    static int stepOfGrid;
+
+    enum type{button, toglebutton, text, indicator};
     Chip(const  type t, int x, int y);
 
     QRectF boundingRect() const;
     QPainterPath shape() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *item, QWidget *widget);
     QString Save();
+    Chip::type getType();
 
+    void setWidth(qreal );
+    void setHeight(qreal );
+    void setText(QString );
+    void setBackgroundImage(QString );
+
+    qreal getWidth( );
+    qreal getHeight( );
+    QString getText( );
+    QString getBackgroundImage( );
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *);
 
 private:
     int x, y;
     QColor color;
     type currentType;
     QList<QPointF> stuff;
+
+    QString m_text;
+    qreal m_width;
+    qreal m_height;
+    QString m_backgroundImage;
+    QImage *m_backGroundImageCache;
+
+    int snapToGrid(qreal );
 };
 
 #endif

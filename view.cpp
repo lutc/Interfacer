@@ -70,6 +70,7 @@ View::View(QWidget *parent)
     openGlButton->setText(tr("OpenGL"));
     openGlButton->setCheckable(true);
 
+
 #ifndef QT_NO_OPENGL
     openGlButton->setEnabled(QGLFormat::hasOpenGL());
 #else
@@ -109,9 +110,9 @@ View::View(QWidget *parent)
     connect(btnAddText, SIGNAL(clicked()), this, SLOT(AddText()));
     connect (btnSave, SIGNAL(clicked()), ItemManager::Instance(), SLOT(SaveToFile()));
 
-//    connect(graphicsView, SIGNAL())
-
     setupMatrix();
+
+    openGlButton->setChecked(true);
 }
 
 QGraphicsView *View::view() const
@@ -175,9 +176,4 @@ void View::AddItem(Chip::type t, int x, int y)
 //    item->setPos(QPointF(x, y));
     graphicsView->scene()->addItem(item);
     ItemManager::Instance()->AddItem((Chip*)item);
-}
-
-void View::Save()
-{
-
 }

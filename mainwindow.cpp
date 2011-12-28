@@ -40,10 +40,11 @@
 ****************************************************************************/
 
 #include "mainwindow.h"
-#include "view.h"
-#include "chip.h"
-
 #include <QtGui>
+
+#include "view.h"
+#include "project.h"
+#include "chip.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QWidget(parent)
@@ -60,6 +61,14 @@ MainWindow::MainWindow(QWidget *parent)
     setLayout(layout);
 
     setWindowTitle(tr("Interfacer"));
+
+//    QString dir = QFileDialog::getExistingDirectory(this, tr("Select Project Directory"),
+//                                                    "/home/marinas/MECS/projects/detsad/rootfs/",
+//                                                    QFileDialog::ShowDirsOnly
+//                                                    | QFileDialog::DontResolveSymlinks);
+
+//    if (dir.length() > 0)
+//        Project::PathToProject = dir;
 }
 
 void MainWindow::populateScene()
@@ -68,9 +77,9 @@ void MainWindow::populateScene()
     int sceneHeight = 700;
     int sceneWidth = 1200;
     scene->addRect(0, 0, sceneWidth, sceneHeight);
-    for (int i = 50; i < sceneWidth; i += 50)
+    for (int i = Chip::stepOfGrid; i < sceneWidth; i += Chip::stepOfGrid)
         scene->addLine(i, 0, i, sceneHeight);
-    for (int i = 50; i < sceneHeight; i += 50)
+    for (int i = Chip::stepOfGrid; i < sceneHeight; i += Chip::stepOfGrid)
         scene->addLine(0, i, sceneWidth, i);
 return;
 //    QImage image(":/qt4logo.png");

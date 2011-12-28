@@ -14,7 +14,7 @@ public:
 
     int AddItem(Chip *);
 
-    void LoadToFile();
+    void LoadFromFile();
 
 signals:
 

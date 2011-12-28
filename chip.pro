@@ -1,9 +1,13 @@
 RESOURCES += images.qrc
 
 HEADERS += mainwindow.h view.h chip.h \
-    itemmanager.h
+    itemmanager.h \
+    itemproperties.h \
+    project.h
 SOURCES += main.cpp \
-    itemmanager.cpp
+    itemmanager.cpp \
+    itemproperties.cpp \
+    project.cpp
 SOURCES += mainwindow.cpp view.cpp chip.cpp
 
 contains(QT_CONFIG, opengl):QT += opengl

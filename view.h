@@ -69,7 +69,7 @@ private slots:
     void AddText();
     void AddTogleButton();
 
-    void Save();
+//    void Save();
 
 
 private:
