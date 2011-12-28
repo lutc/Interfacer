@@ -6,32 +6,34 @@
 #include <QLineEdit>
 #include <QLabel>
 
-class ButtonMESC : public CommonItemMECS
+#include "itemaction.h"
+
+class ButtonMECS : public CommonItemMECS
 {
 public:
-    ButtonMESC(int , int );
+    ButtonMECS(int, int, bool enableAction = true);
 
     QString GetName();
     QString GetTextName();
-    QGridLayout *GetPropertiesWidgets();
+    virtual QGridLayout *GetPropertiesWidgets();
     void AcceptWidgetsProperties();
 
     virtual QString Save();
+
+protected:
+    bool addOnClickAction;
 
 private:
     QComboBox *m_cmbUpImage;
     QComboBox *m_cmbDownImage;
     QComboBox *m_cmbHeldImage;
-    QComboBox *m_cmbTypeAction;
-    QComboBox *m_cmbTargetAction;
-    QComboBox *m_cmbAction;
 
     QString m_downImage;
     QString m_heldImage;
 
-    QString m_typeAction;
-    QString m_targetAction;
-    QString m_action;
+    ItemAction *m_onClickAction;
+
+    QString m_onClickActionString;
 };
 
 #endif // BUTTONMESC_H

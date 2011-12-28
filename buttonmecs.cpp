@@ -1,27 +1,28 @@
-#include "buttonmesc.h"
+#include "buttonmecs.h"
 #include <QLabel>
-#include <QHBoxLayout>
 
 #include "project.h"
 
-ButtonMESC::ButtonMESC(int x, int y):
-    CommonItemMECS(x, y)
+ButtonMECS::ButtonMECS(int x, int y, bool enableAction):
+    CommonItemMECS(x, y),
+    addOnClickAction(enableAction)
 
 {
     this->color = QColor(255, 0, 0);
+    m_onClickAction = new ItemAction();
 }
 
-QString ButtonMESC::GetName()
+QString ButtonMECS::GetName()
 {
     return "Button";
 }
 
-QString ButtonMESC::GetTextName()
+QString ButtonMECS::GetTextName()
 {
     return "Caption";
 }
 
-QGridLayout *ButtonMESC::GetPropertiesWidgets()
+QGridLayout *ButtonMECS::GetPropertiesWidgets()
 {
     QLabel *lblLabelUpImage = new QLabel("Up Image:");
     m_cmbUpImage = new QComboBox;
@@ -44,26 +45,6 @@ QGridLayout *ButtonMESC::GetPropertiesWidgets()
     if (!m_heldImage.isEmpty())
         m_cmbHeldImage->setCurrentIndex(m_cmbHeldImage->findText(m_heldImage));
 
-    m_cmbTypeAction = new QComboBox;
-    m_cmbTypeAction->addItem("Command");
-    m_cmbTypeAction->addItem("Page");
-    if (!m_typeAction.isEmpty())
-        m_cmbTypeAction->setEditText(m_typeAction);
-
-    m_cmbTargetAction = new QComboBox;
-    m_cmbTargetAction->setEditable(true);
-    if (!m_targetAction.isEmpty())
-        m_cmbTargetAction->setEditText(m_targetAction);
-
-    m_cmbAction = new QComboBox;
-    m_cmbAction->setEditable(true);
-    if (!m_action.isEmpty())
-        m_cmbAction->setEditText(m_action);
-
-    QHBoxLayout *actionLayout = new QHBoxLayout;
-    actionLayout->addWidget(m_cmbTypeAction);
-    actionLayout->addWidget(m_cmbTargetAction);
-    actionLayout->addWidget(m_cmbAction);
 
     QGridLayout *layout = new QGridLayout();
     layout->addWidget(lblLabelUpImage, 0, 0);
@@ -72,25 +53,25 @@ QGridLayout *ButtonMESC::GetPropertiesWidgets()
     layout->addWidget(m_cmbDownImage, 1, 1);
     layout->addWidget(lblLabelHeldImage, 2, 0);
     layout->addWidget(m_cmbHeldImage, 2, 1);
-    layout->addLayout(actionLayout, 3, 0, 1, 2);
+    if (addOnClickAction)
+        layout->addLayout(m_onClickAction->GetLayout(), 3, 0, 1, 2);
 
     return layout;
 }
 
-void ButtonMESC::AcceptWidgetsProperties()
+void ButtonMECS::AcceptWidgetsProperties()
 {
     setBackgroundImage(m_cmbUpImage->currentText());
     m_downImage = m_cmbDownImage->currentText();
     m_heldImage = m_cmbHeldImage->currentText();
 
-    m_targetAction = m_cmbTargetAction->currentText();
-    m_typeAction = m_cmbTypeAction->currentText();
-    m_action = m_cmbAction->currentText();
+    m_onClickActionString = m_onClickAction->ToString();
 }
 
-QString ButtonMESC::Save()
+QString ButtonMECS::Save()
 {
-
+    QString onClickAction = QString("OnClick  = %0")
+            .arg(m_onClickActionString);
     return QString (
         "[Button]\n"\
         "Pages = Main\n" \
@@ -99,8 +80,8 @@ QString ButtonMESC::Save()
 
     QString ("UpImage = Images/%0\n" \
         "DownImage = Images/%1\n" \
-        "HeldImage = Images/%2\n" \
-
-        "OnClick  = Command Mitsubishi poweron\n\n").arg(getBackgroundImage())
-            .arg(m_downImage).arg(m_heldImage);
+        "HeldImage = Images/%2\n").arg(getBackgroundImage())
+            .arg(m_downImage).arg(m_heldImage) +
+            ((addOnClickAction)?onClickAction:"")
+            + "\n\n";
 }

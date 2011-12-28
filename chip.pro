@@ -4,16 +4,20 @@ HEADERS += mainwindow.h view.h \
     itemmanager.h \
     itemproperties.h \
     project.h \
-    buttonmesc.h \
     commonitemmecs.h \
-    textmesc.h
+    textmesc.h \
+    togglebuttonmecs.h \
+    buttonmecs.h \
+    itemaction.h
 SOURCES += main.cpp \
     itemmanager.cpp \
     itemproperties.cpp \
     project.cpp \
-    buttonmesc.cpp \
     commonitemmecs.cpp \
-    textmesc.cpp
+    textmesc.cpp \
+    togglebuttonmecs.cpp \
+    buttonmecs.cpp \
+    itemaction.cpp
 SOURCES += mainwindow.cpp view.cpp
 
 contains(QT_CONFIG, opengl):QT += opengl

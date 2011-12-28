@@ -48,8 +48,9 @@
 
 #include <qmath.h>
 
-#include "buttonmesc.h"
-#include"textmesc.h"
+#include "buttonmecs.h"
+#include "textmesc.h"
+#include "togglebuttonmecs.h"
 
 View::View(QWidget *parent)
     : QFrame(parent)
@@ -179,11 +180,15 @@ void View::AddItem(CommonItemMECS::ItemTypes type, int x, int y)
     switch (type)
     {
     case CommonItemMECS::button:
-        item = new ButtonMESC(x, y);
+        item = new ButtonMECS(x, y);
         break;
 
     case CommonItemMECS::text:
         item = new TextMESC(x, y);
+        break;
+
+    case CommonItemMECS::toglebutton:
+        item = new ToggleButtonMECS(x, y);
         break;
 
     default:
