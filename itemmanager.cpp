@@ -35,6 +35,7 @@ void ItemManager::SaveToFile()
     QFile file("interface");
     file.open(QIODevice::WriteOnly | QIODevice::Text);
     QTextStream out(&file);
+    out.setCodec("Windows-1251");
 // TODO Add pages manager
     QString prepend = "[Page]\n" \
 

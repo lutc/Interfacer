@@ -77,6 +77,8 @@ public:
 
 protected:
     QColor color;
+    int m_itemFlags;
+
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);

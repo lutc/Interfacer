@@ -10,9 +10,14 @@ public:
     ToggleButtonMECS(int , int );
     QString GetName();
     QGridLayout *GetPropertiesWidgets();
+    void AcceptWidgetsProperties();
+    QString Save();
 private:
-    ItemAction *onUpAction;
-    ItemAction *onDownAction;
+    ItemAction *m_onUpAction;
+    ItemAction *m_onDownAction;
+
+    QString m_onUpActionString;
+    QString m_onDownActionString;
 };
 
 #endif // TOGGLEBUTTONMECS_H

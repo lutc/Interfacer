@@ -49,7 +49,8 @@
 int CommonItemMECS::stepOfGrid = 25;
 
 CommonItemMECS::CommonItemMECS(int x, int y):
-    m_width(200), m_height(50)
+    m_width(200), m_height(100),
+    m_itemFlags(Qt::AlignCenter)
 {
     this->x = x;
     this->y = y;
@@ -107,7 +108,7 @@ void CommonItemMECS::paint(QPainter *painter, const QStyleOptionGraphicsItem *op
     }
 
     painter->setPen(pen);
-    painter->drawText(boundingRect(), Qt::AlignCenter, m_text);
+    painter->drawText(boundingRect(), m_itemFlags, m_text);
     painter->setPen(oldPen);
 
 return;

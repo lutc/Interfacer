@@ -64,8 +64,8 @@ void ButtonMECS::AcceptWidgetsProperties()
     setBackgroundImage(m_cmbUpImage->currentText());
     m_downImage = m_cmbDownImage->currentText();
     m_heldImage = m_cmbHeldImage->currentText();
-
-    m_onClickActionString = m_onClickAction->ToString();
+    if (addOnClickAction)
+        m_onClickActionString = m_onClickAction->ToString();
 }
 
 QString ButtonMECS::Save()
@@ -73,10 +73,10 @@ QString ButtonMECS::Save()
     QString onClickAction = QString("OnClick  = %0")
             .arg(m_onClickActionString);
     return QString (
-        "[Button]\n"\
+        "[%0]\n"\
         "Pages = Main\n" \
 
-        "Caption = %1\n").arg(getText()) + CommonItemMECS::Save() +
+        "Caption = %1\n").arg(GetName()).arg(getText()) + CommonItemMECS::Save() +
 
     QString ("UpImage = Images/%0\n" \
         "DownImage = Images/%1\n" \

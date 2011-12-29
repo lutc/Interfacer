@@ -4,6 +4,7 @@ TextMESC::TextMESC(int x, int y):
     CommonItemMECS(x, y)
 {
     this->color = QColor(0, 255, 0);
+    m_itemFlags = Qt::AlignLeft;
 }
 
 QString TextMESC::GetName()

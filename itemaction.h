@@ -24,6 +24,9 @@ private:
     QString m_typeAction;
     QString m_targetAction;
     QString m_action;
+
+private slots:
+    void onTypeActionChange(int);
 };
 
 #endif // ITEMACTION_H
