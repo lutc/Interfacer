@@ -79,6 +79,9 @@ protected:
     QColor color;
     int m_itemFlags;
 
+    qreal m_width;
+    qreal m_height;
+
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
@@ -91,8 +94,7 @@ private:
     QList<QPointF> stuff;
 
     QString m_text;
-    qreal m_width;
-    qreal m_height;
+
     QString m_backgroundImage;
     QImage *m_backGroundImageCache;
 

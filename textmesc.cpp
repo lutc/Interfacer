@@ -5,6 +5,7 @@ TextMESC::TextMESC(int x, int y):
 {
     this->color = QColor(0, 255, 0);
     m_itemFlags = Qt::AlignLeft;
+    m_height = 50;
 }
 
 QString TextMESC::GetName()

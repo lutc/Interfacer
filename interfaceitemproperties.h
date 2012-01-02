@@ -7,11 +7,11 @@
 #include <QDialogButtonBox>
 #include "commonitemmecs.h"
 
-class ItemProperties : public QDialog
+class InterfaceItemProperties : public QDialog
 {
     Q_OBJECT
 public:
-    explicit ItemProperties(CommonItemMECS &);
+    explicit InterfaceItemProperties(CommonItemMECS &);
 
 signals:
 
@@ -20,7 +20,7 @@ public slots:
     void accept();
 
 private:
-    CommonItemMECS                *chip;
+    CommonItemMECS                *m_item;
 
     QDialogButtonBox    *buttonBox;
     QLineEdit           *txtWidth;

@@ -1,4 +1,4 @@
-#include "itemproperties.h"
+#include "interfaceitemproperties.h"
 #include <QDebug>
 
 #include <QtGui/QGridLayout>
@@ -6,10 +6,10 @@
 
 #include "project.h"
 
-ItemProperties::ItemProperties(CommonItemMECS &item) :
+InterfaceItemProperties::InterfaceItemProperties(CommonItemMECS &item) :
     QDialog(0)
 {
-    this->chip = &item;
+    this->m_item = &item;
 
     QLabel *lblLabelType = new QLabel("Type:");
     QLabel *lblType = new QLabel();
@@ -50,12 +50,12 @@ ItemProperties::ItemProperties(CommonItemMECS &item) :
     connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
 }
 
-void ItemProperties::accept()
+void InterfaceItemProperties::accept()
 {
-    chip->setWidth(txtWidth->text().toInt());
-    chip->setHeight(txtHeight->text().toInt());
-    chip->setText(txtText->text());
+    m_item->setWidth(txtWidth->text().toInt());
+    m_item->setHeight(txtHeight->text().toInt());
+    m_item->setText(txtText->text());
 
-    chip->AcceptWidgetsProperties();
+    m_item->AcceptWidgetsProperties();
     QDialog::accept();
 }

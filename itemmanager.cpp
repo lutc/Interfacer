@@ -10,9 +10,9 @@ ItemManager::ItemManager() :
 {
 }
 
-int ItemManager::AddItem(CommonItemMECS * chip)
+int ItemManager::AddItem(CommonItemMECS * item)
 {
-    items.append(chip);
+    items.append(item);
     return items.count() - 1;
 }
 

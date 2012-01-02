@@ -43,14 +43,14 @@
 
 #include <QtGui>
 
-#include "itemproperties.h"
+#include "interfaceitemproperties.h"
 #include "project.h"
 
 int CommonItemMECS::stepOfGrid = 25;
 
 CommonItemMECS::CommonItemMECS(int x, int y):
-    m_width(200), m_height(100),
-    m_itemFlags(Qt::AlignCenter)
+    m_itemFlags(Qt::AlignCenter),
+    m_width(200), m_height(100)
 {
     this->x = x;
     this->y = y;
@@ -229,7 +229,7 @@ void CommonItemMECS::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 void CommonItemMECS::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *)
 {
-    ItemProperties *properties = new ItemProperties(*this);
+    InterfaceItemProperties *properties = new InterfaceItemProperties(*this);
     properties->setWindowModality(Qt::ApplicationModal);
     properties->show();
 }
