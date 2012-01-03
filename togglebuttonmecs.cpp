@@ -3,7 +3,7 @@
 ToggleButtonMECS::ToggleButtonMECS(int x, int y):
     ButtonMECS(x, y, false)
 {
-    this->color = QColor(0, 255, 0);
+    this->color = QColor(0, 0, 255);
     m_onUpAction = new ItemAction();
     m_onDownAction = new ItemAction();
 }

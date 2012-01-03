@@ -74,8 +74,6 @@ QString ButtonMECS::Save()
             .arg(m_onClickActionString);
     return QString (
         "[%0]\n"\
-        "Pages = Main\n" \
-
         "Caption = %1\n").arg(GetName()).arg(getText()) + CommonItemMECS::Save() +
 
     QString ("UpImage = Images/%0\n" \

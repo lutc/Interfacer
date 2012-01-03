@@ -12,5 +12,8 @@ QStringList Project::getImages()
 {
     QDir *dir = new QDir(Project::PathToProject + Project::ImagesDirectory);
 //    dir->setFilter(QDir::NoDot | QDir::NoDotDot);
-    return dir->entryList();
+    QStringList list = dir->entryList();
+    list.removeFirst();
+    list.removeFirst();
+    return list;
 }

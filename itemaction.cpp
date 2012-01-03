@@ -1,4 +1,5 @@
 #include "itemaction.h"
+#include "itemmanager.h"
 
 ItemAction::ItemAction(QObject *parent) :
     QObject(parent)
@@ -7,12 +8,14 @@ ItemAction::ItemAction(QObject *parent) :
 
 QHBoxLayout *ItemAction::GetLayout()
 {
+    m_pagesList = ItemManager::Instance()->GetPages();
     m_cmbTypeAction = new QComboBox;
     m_cmbTypeAction->addItem("Command");
     m_cmbTypeAction->addItem("Page");
     m_cmbTypeAction->setFixedWidth(105);
     if (!m_typeAction.isEmpty())
         m_cmbTypeAction->setCurrentIndex(m_cmbTypeAction->findText(m_typeAction));
+
 
     m_cmbTargetAction = new QComboBox;
     m_cmbTargetAction->setEditable(true);
@@ -50,10 +53,12 @@ void ItemAction::onTypeActionChange(int cmbValue)
     switch (cmbValue)
     {
     case 0: //Command
+        m_cmbAction->clear();
         m_cmbTargetAction->show();
         break;
 
     case 1: //Page
+        m_cmbAction->addItems(m_pagesList);
         m_cmbTargetAction->hide();
         break;
 

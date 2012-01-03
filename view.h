@@ -59,33 +59,24 @@ class View : public QFrame
 public:
     View(QWidget *parent = 0);
 
-    QGraphicsView *view() const;
-
 private slots:
-    void setupMatrix();
-    void toggleOpenGL();
-    void toggleAntialiasing();
     void AddButton();
     void AddText();
     void AddTogleButton();
 
-//    void Save();
-
+    void AddPage();
+    void ChangeTabName();
 
 private:
-    QGraphicsView *graphicsView;
-
-    QToolButton *openGlButton;
-    QToolButton *antialiasButton;
-
-
     QToolButton *btnAddButton;
     QToolButton *btnAddTogleButton;
     QToolButton *btnAddText;
+    QToolButton *btnAddPage;
     QToolButton *btnSave;
-    QTabWidget* tabwidget;
+    QTabWidget  *tabWidget;
 
     void AddItem(CommonItemMECS::ItemTypes, int, int);
+
 };
 
 #endif

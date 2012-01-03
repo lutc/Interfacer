@@ -45,12 +45,14 @@
 
 #include "interfaceitemproperties.h"
 #include "project.h"
+#include "page.h"
 
 int CommonItemMECS::stepOfGrid = 25;
 
 CommonItemMECS::CommonItemMECS(int x, int y):
     m_itemFlags(Qt::AlignCenter),
-    m_width(200), m_height(100)
+    m_width(200), m_height(100),
+    m_removed(false)
 {
     this->x = x;
     this->y = y;
@@ -111,6 +113,18 @@ void CommonItemMECS::paint(QPainter *painter, const QStyleOptionGraphicsItem *op
     painter->drawText(boundingRect(), m_itemFlags, m_text);
     painter->setPen(oldPen);
 
+    if (m_removed)
+    {
+        QPen oldPenBorder = painter->pen();
+        QPen *penBorder = new QPen(Qt::red);
+        penBorder->setWidth(3);
+        penBorder->setStyle(Qt::SolidLine);
+        painter->setPen(*penBorder);
+        painter->drawLine(boundingRect().topLeft(), boundingRect().bottomRight());
+        painter->drawLine(boundingRect().bottomLeft(), boundingRect().topRight());
+        painter->setPen(oldPenBorder);
+    }
+
 return;
 
 }
@@ -161,35 +175,21 @@ QString CommonItemMECS::getBackgroundImage()
     return m_backgroundImage;
 }
 
+bool CommonItemMECS::isRemoved()
+{
+    return m_removed;
+}
+
 QString CommonItemMECS::Save()
 {
     QString result = QString(
-        "Left = %0\n" \
-        "Top = %1\n" \
+        "Pages = %0\n" \
+        "Left = %1\n" \
+        "Top = %2\n" \
 
         "Font = Images/arial.ttf\n" \
         "FontSize = 20\n" \
-        "Color = white\n").arg(scenePos().x()).arg(scenePos().y());
-
-    /*switch (currentType)
-    {
-    case toglebutton:
-        result = QString (
-            "[TogleButton]\n"\
-            "Pages = Main\n" \
-
-            "Caption = %1\n").arg(getText()) + result +
-
-        QString ("UpImage = Images/%0\n" \
-                 "DownImage = Images/menu_light_btn.png\n" \
-                 "HeldImage = Images/menu_light_btn.png\n" \
-
-                 "OnUp  = Command Mitsubishi poweron\n" \
-                 "OnDown  = Command Mitsubishi poweron\n\n")
-                .arg(getBackgroundImage());
-        break;
-    }
-*/
+                "Color = white\n").arg(((Page*)scene())->Name()).arg(scenePos().x()).arg(scenePos().y());
 
     return result;
 }
@@ -197,6 +197,8 @@ QString CommonItemMECS::Save()
 void CommonItemMECS::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     QGraphicsItem::mousePressEvent(event);
+    if (event->button() == Qt::RightButton)
+        m_removed = !m_removed;
     update();
 }
 

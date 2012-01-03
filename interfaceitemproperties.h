@@ -20,7 +20,7 @@ public slots:
     void accept();
 
 private:
-    CommonItemMECS                *m_item;
+    CommonItemMECS      *m_item;
 
     QDialogButtonBox    *buttonBox;
     QLineEdit           *txtWidth;

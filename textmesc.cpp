@@ -35,7 +35,6 @@ QString TextMESC::Save()
 {
     return QString (
         "[Text]\n"\
-        "Pages = Main\n" \
         "Align = left\n") +
             CommonItemMECS::Save() +
         QString ("Width = %2\n" \

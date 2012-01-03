@@ -24,6 +24,7 @@ private:
     QString m_typeAction;
     QString m_targetAction;
     QString m_action;
+    QStringList m_pagesList;
 
 private slots:
     void onTypeActionChange(int);

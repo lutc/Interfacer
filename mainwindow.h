@@ -55,14 +55,12 @@ class MainWindow : public QWidget
     Q_OBJECT
 public:
     MainWindow(QWidget *parent = 0);
-    
+
+signals:
+    void a();
+
 private:
-    void setupMatrix();
-    void populateScene();
-    
-    QGraphicsScene *scene;
-    QSplitter *h1Splitter;
-    QSplitter *h2Splitter;
+
 };
 
 #endif

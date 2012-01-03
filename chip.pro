@@ -9,7 +9,9 @@ HEADERS += mainwindow.h view.h \
     buttonmecs.h \
     itemaction.h \
     interfaceitemproperties.h \
-    parser.h
+    parser.h \
+    page.h \
+    pageproperties.h
 SOURCES += main.cpp \
     itemmanager.cpp \
     project.cpp \
@@ -19,7 +21,9 @@ SOURCES += main.cpp \
     buttonmecs.cpp \
     itemaction.cpp \
     interfaceitemproperties.cpp \
-    parser.cpp
+    parser.cpp \
+    page.cpp \
+    pageproperties.cpp
 SOURCES += mainwindow.cpp view.cpp
 
 contains(QT_CONFIG, opengl):QT += opengl

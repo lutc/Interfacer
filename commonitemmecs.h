@@ -69,6 +69,7 @@ public:
     qreal getHeight( );
     QString getText( );
     QString getBackgroundImage( );
+    bool isRemoved();
 
     virtual QString GetName() = 0;
     virtual QString GetTextName() = 0;
@@ -99,6 +100,8 @@ private:
     QImage *m_backGroundImageCache;
 
     int snapToGrid(qreal );
+
+    bool m_removed;
 };
 
 #endif

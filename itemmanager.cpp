@@ -16,6 +16,12 @@ int ItemManager::AddItem(CommonItemMECS * item)
     return items.count() - 1;
 }
 
+int ItemManager::AddItem(Page *page)
+{
+    pages.append(page);
+    return pages.count() - 1;
+}
+
 ItemManager *ItemManager::Instance()
 {
     static QMutex mutex;
@@ -29,29 +35,40 @@ ItemManager *ItemManager::Instance()
     return m_instance;
 }
 
-void ItemManager::SaveToFile()
+void ItemManager::GenerateInterface()
 {
 
     QFile file("interface");
     file.open(QIODevice::WriteOnly | QIODevice::Text);
     QTextStream out(&file);
     out.setCodec("Windows-1251");
-// TODO Add pages manager
-    QString prepend = "[Page]\n" \
 
-            "Name = Main\n" \
-            "Background = Images/aqua_back.png\n\n";
-    out << prepend;
-    foreach (CommonItemMECS *chip, items) {
-        out << chip->Save();
+    foreach (Page *page, pages)
+    {
+        out << page->Save();
+    }
+
+    foreach (CommonItemMECS *item, items) {
+        if (!item->isRemoved())
+            out << item->Save();
     }
 
     QFileInfo *info = new QFileInfo(file);
-    qDebug() << "Saved to file" << info->absoluteFilePath();
+    qDebug() << "Generated" << info->absoluteFilePath();
     file.close();
 }
 
 void ItemManager::LoadFromFile()
 {
 
+}
+
+QStringList ItemManager::GetPages()
+{
+    QStringList list;
+    foreach(Page *page, pages)
+    {
+        list.append(page->Name());
+    }
+    return list;
 }

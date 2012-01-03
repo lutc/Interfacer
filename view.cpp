@@ -51,35 +51,15 @@
 #include "buttonmecs.h"
 #include "textmesc.h"
 #include "togglebuttonmecs.h"
+#include "page.h"
 
 View::View(QWidget *parent)
     : QFrame(parent)
 {
     setFrameStyle(Sunken | StyledPanel);
-    graphicsView = new QGraphicsView;
-    graphicsView->setRenderHint(QPainter::Antialiasing, false);
-    graphicsView->setDragMode(QGraphicsView::RubberBandDrag);
-    graphicsView->setOptimizationFlags(QGraphicsView::DontSavePainterState);
-    graphicsView->setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);
-
 
     // Label layout
     QHBoxLayout *labelLayout = new QHBoxLayout;
-
-    antialiasButton = new QToolButton;
-    antialiasButton->setText(tr("Antialiasing"));
-    antialiasButton->setCheckable(true);
-    antialiasButton->setChecked(false);
-    openGlButton = new QToolButton;
-    openGlButton->setText(tr("OpenGL"));
-    openGlButton->setCheckable(true);
-
-
-#ifndef QT_NO_OPENGL
-    openGlButton->setEnabled(QGLFormat::hasOpenGL());
-#else
-    openGlButton->setEnabled(false);
-#endif
 
     btnAddButton = new QToolButton;
     btnAddButton->setText("Add button");
@@ -87,77 +67,38 @@ View::View(QWidget *parent)
     btnAddTogleButton->setText("Add TogleButton");
     btnAddText = new QToolButton;
     btnAddText->setText("Add Text");
+    btnAddPage = new QToolButton;
+    btnAddPage->setText("Add page");
+
     btnSave = new QToolButton;
     btnSave->setText("Save");
 
     labelLayout->addWidget(btnAddButton);
     labelLayout->addWidget(btnAddTogleButton);
     labelLayout->addWidget(btnAddText);
+    labelLayout->addSpacing(15);
+    labelLayout->addWidget(btnAddPage);
     labelLayout->addStretch();
-    labelLayout->addWidget(antialiasButton);
-    labelLayout->addWidget(openGlButton);
     labelLayout->addWidget(btnSave);
 
-    tabwidget = new QTabWidget;
-
+    tabWidget = new QTabWidget;
+    AddPage();
 
     QGridLayout *topLayout = new QGridLayout;
     topLayout->addLayout(labelLayout, 0, 0);
-    topLayout->addWidget(graphicsView, 1, 0);
+
+    topLayout->addWidget(tabWidget, 1, 0);
+
 
     setLayout(topLayout);
 
-    connect(antialiasButton, SIGNAL(toggled(bool)), this, SLOT(toggleAntialiasing()));
-    connect(openGlButton, SIGNAL(toggled(bool)), this, SLOT(toggleOpenGL()));
     connect(btnAddButton, SIGNAL(clicked()), this, SLOT(AddButton()));
     connect(btnAddTogleButton, SIGNAL(clicked()), this, SLOT(AddTogleButton()));
     connect(btnAddText, SIGNAL(clicked()), this, SLOT(AddText()));
-    connect (btnSave, SIGNAL(clicked()), ItemManager::Instance(), SLOT(SaveToFile()));
-
-    setupMatrix();
-
-    openGlButton->setChecked(true);
+    connect(btnAddPage, SIGNAL(clicked()), this, SLOT(AddPage()));
+    connect (btnSave, SIGNAL(clicked()), ItemManager::Instance(), SLOT(GenerateInterface()));
 }
 
-QGraphicsView *View::view() const
-{
-    return graphicsView;
-}
-
-//void View::resetView()
-//{
-//    zoomSlider->setValue(250);
-//    rotateSlider->setValue(0);
-//    setupMatrix();
-//    graphicsView->ensureVisible(QRectF(0, 0, 0, 0));
-
-//    resetButton->setEnabled(false);
-//}
-
-
-void View::setupMatrix()
-{
-//    qreal scale = qPow(qreal(2), (250 - 250) / qreal(50));
-
-    QMatrix matrix;
-//    matrix.scale(scale, scale);
-//    matrix.rotate(rotateSlider->value());
-
-
-    graphicsView->setMatrix(matrix);
-}
-
-void View::toggleOpenGL()
-{
-#ifndef QT_NO_OPENGL
-    graphicsView->setViewport(openGlButton->isChecked() ? new QGLWidget(QGLFormat(QGL::SampleBuffers)) : new QWidget);
-#endif
-}
-
-void View::toggleAntialiasing()
-{
-    graphicsView->setRenderHint(QPainter::Antialiasing, antialiasButton->isChecked());
-}
 
 void View::AddButton()
 {
@@ -195,6 +136,36 @@ void View::AddItem(CommonItemMECS::ItemTypes type, int x, int y)
         return;
     }
 
+    QGraphicsView *graphicsView = qobject_cast<QGraphicsView *>(tabWidget->currentWidget());
     graphicsView->scene()->addItem(item);
     ItemManager::Instance()->AddItem((CommonItemMECS*)item);
+}
+
+void View::AddPage()
+{
+    QGraphicsView *graphicsView = new QGraphicsView();
+    Page *page = new Page;
+    ItemManager::Instance()->AddItem(page);
+    graphicsView->setScene(page);
+    connect(((Page*)graphicsView->scene()), SIGNAL(selectionChanged()), this, SLOT(ChangeTabName()));
+
+    graphicsView->setRenderHint(QPainter::Antialiasing, false);
+    graphicsView->setDragMode(QGraphicsView::RubberBandDrag);
+    graphicsView->setOptimizationFlags(QGraphicsView::DontSavePainterState);
+    graphicsView->setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);
+    #ifndef QT_NO_OPENGL
+    graphicsView->setViewport(new QGLWidget(QGLFormat(QGL::SampleBuffers)));
+    #endif
+    graphicsView->setRenderHint(QPainter::Antialiasing, true);
+
+    tabWidget->setUpdatesEnabled(false);
+    tabWidget->addTab(graphicsView, "Main");
+
+    tabWidget->setUpdatesEnabled(true);
+}
+
+void View::ChangeTabName()
+{
+    tabWidget->setTabText(tabWidget->currentIndex(),
+                          ((Page *)qobject_cast<QGraphicsView *>(tabWidget->currentWidget())->scene())->Name());
 }

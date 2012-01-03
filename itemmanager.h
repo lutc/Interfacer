@@ -5,6 +5,7 @@
 #include <QVector>
 #include <QDebug>
 #include "commonitemmecs.h"
+#include "page.h"
 
 class ItemManager : public QObject
 {
@@ -13,19 +14,22 @@ public:
     static ItemManager *Instance();
 
     int AddItem(CommonItemMECS *);
+    int AddItem(Page *);
 
     void LoadFromFile();
+    QStringList GetPages();
 
 signals:
 
 public slots:
-    void SaveToFile();
+    void GenerateInterface();
 
 private:
     ItemManager();
     ItemManager(const ItemManager&);
     ItemManager& operator =(const ItemManager&);
     QVector<CommonItemMECS *> items;
+    QVector<Page *> pages;
     static ItemManager* m_instance;
 
 };
