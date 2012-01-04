@@ -27,21 +27,21 @@ QGridLayout *ButtonMECS::GetPropertiesWidgets()
     QLabel *lblLabelUpImage = new QLabel("Up Image:");
     m_cmbUpImage = new QComboBox;
     m_cmbUpImage->addItem("");
-    m_cmbUpImage->addItems(Project::getImages());
+    m_cmbUpImage->addItems(Project::GetImages());
     if (!getBackgroundImage().isEmpty())
         m_cmbUpImage->setCurrentIndex(m_cmbUpImage->findText(getBackgroundImage()));
 
     QLabel *lblLabelDownImage = new QLabel("Down Image:");
     m_cmbDownImage = new QComboBox;
     m_cmbDownImage->addItem("");
-    m_cmbDownImage->addItems(Project::getImages());
+    m_cmbDownImage->addItems(Project::GetImages());
     if (!m_downImage.isEmpty())
         m_cmbDownImage->setCurrentIndex(m_cmbDownImage->findText(m_downImage));
 
     QLabel *lblLabelHeldImage = new QLabel("Held Image:");
     m_cmbHeldImage = new QComboBox;
     m_cmbHeldImage->addItem("");
-    m_cmbHeldImage->addItems(Project::getImages());
+    m_cmbHeldImage->addItems(Project::GetImages());
     if (!m_heldImage.isEmpty())
         m_cmbHeldImage->setCurrentIndex(m_cmbHeldImage->findText(m_heldImage));
 

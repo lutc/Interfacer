@@ -17,7 +17,7 @@ PageProperties::PageProperties(Page *item) :
     QLabel *lblLabelBackgroundImage = new QLabel("Image:");
     m_cmbBackgroundImage = new QComboBox;
     m_cmbBackgroundImage->addItem("");
-    m_cmbBackgroundImage->addItems(Project::getImages());
+    m_cmbBackgroundImage->addItems(Project::GetImages());
     if (!item->Name().isEmpty())
         m_cmbBackgroundImage->setCurrentIndex(m_cmbBackgroundImage->findText(item->Name()));
 

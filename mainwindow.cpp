@@ -45,6 +45,8 @@
 #include "view.h"
 #include "project.h"
 #include "commonitemmecs.h"
+#include "parser.h"
+#include "lirc.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QWidget(parent)
@@ -56,6 +58,7 @@ MainWindow::MainWindow(QWidget *parent)
     setLayout(layout);
 
     setWindowTitle(tr("Interfacer"));
+//    Project::GetLircComands("lifesize");
 
 //    QString dir = QFileDialog::getExistingDirectory(this, tr("Select Project Directory"),
 //                                                    "/home/marinas/MECS/projects/detsad/rootfs/",

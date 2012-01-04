@@ -11,7 +11,9 @@ HEADERS += mainwindow.h view.h \
     interfaceitemproperties.h \
     parser.h \
     page.h \
-    pageproperties.h
+    pageproperties.h \
+    lirc.h \
+    device.h
 SOURCES += main.cpp \
     itemmanager.cpp \
     project.cpp \
@@ -23,7 +25,9 @@ SOURCES += main.cpp \
     interfaceitemproperties.cpp \
     parser.cpp \
     page.cpp \
-    pageproperties.cpp
+    pageproperties.cpp \
+    lirc.cpp \
+    device.cpp
 SOURCES += mainwindow.cpp view.cpp
 
 contains(QT_CONFIG, opengl):QT += opengl
