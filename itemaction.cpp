@@ -1,6 +1,8 @@
 #include "itemaction.h"
 #include "itemmanager.h"
 
+#include "project.h"
+
 ItemAction::ItemAction(QObject *parent) :
     QObject(parent)
 {
@@ -19,6 +21,9 @@ QHBoxLayout *ItemAction::GetLayout()
 
     m_cmbTargetAction = new QComboBox;
     m_cmbTargetAction->setEditable(true);
+    m_cmbTargetAction->addItem("");
+    m_cmbTargetAction->addItems(Project::GetDevices());
+
     if (!m_targetAction.isEmpty())
         m_cmbTargetAction->setEditText(m_targetAction);
 
@@ -26,7 +31,10 @@ QHBoxLayout *ItemAction::GetLayout()
     m_cmbAction->setEditable(true);
     if (!m_action.isEmpty())
         m_cmbAction->setEditText(m_action);
-    connect(m_cmbTypeAction, SIGNAL(currentIndexChanged(int)), this, SLOT(onTypeActionChange(int)));
+    connect(m_cmbTypeAction, SIGNAL(currentIndexChanged(int)),
+            this, SLOT(onTypeActionChange(int)));
+    connect(m_cmbTargetAction, SIGNAL(currentIndexChanged(QString)),
+            this, SLOT(onTargetActionChange(QString)));
 
     QHBoxLayout *actionLayout = new QHBoxLayout;
     actionLayout->addWidget(m_cmbTypeAction);
@@ -65,4 +73,10 @@ void ItemAction::onTypeActionChange(int cmbValue)
     default:
         break;
     }
+}
+
+void ItemAction::onTargetActionChange(QString deviceName)
+{
+    m_cmbAction->clear();
+    m_cmbAction->addItems(Project::GetDeviceCommands(deviceName));
 }

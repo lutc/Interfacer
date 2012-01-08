@@ -52,6 +52,8 @@
 #include "textmesc.h"
 #include "togglebuttonmecs.h"
 #include "page.h"
+#include "addeditdevicedialog.h"
+#include "project.h"
 
 View::View(QWidget *parent)
     : QFrame(parent)
@@ -69,6 +71,8 @@ View::View(QWidget *parent)
     btnAddText->setText("Add Text");
     btnAddPage = new QToolButton;
     btnAddPage->setText("Add page");
+    btnAddDevice = new QToolButton;
+    btnAddDevice->setText("Add Device");
 
     btnSave = new QToolButton;
     btnSave->setText("Save");
@@ -78,6 +82,7 @@ View::View(QWidget *parent)
     labelLayout->addWidget(btnAddText);
     labelLayout->addSpacing(15);
     labelLayout->addWidget(btnAddPage);
+    labelLayout->addWidget(btnAddDevice);
     labelLayout->addStretch();
     labelLayout->addWidget(btnSave);
 
@@ -97,6 +102,7 @@ View::View(QWidget *parent)
     connect(btnAddText, SIGNAL(clicked()), this, SLOT(AddText()));
     connect(btnAddPage, SIGNAL(clicked()), this, SLOT(AddPage()));
     connect (btnSave, SIGNAL(clicked()), ItemManager::Instance(), SLOT(GenerateInterface()));
+    connect(btnAddDevice, SIGNAL(clicked()), this, SLOT(AddDevice()));
 }
 
 
@@ -113,6 +119,13 @@ void View::AddText()
 void View::AddTogleButton()
 {
     AddItem(CommonItemMECS::toglebutton, 0, 0);
+}
+
+void View::AddDevice()
+{
+    Device *dev = NULL;
+    AddEditDeviceDialog *frmAddDevice = new AddEditDeviceDialog(dev);
+    frmAddDevice->show();
 }
 
 void View::AddItem(CommonItemMECS::ItemTypes type, int x, int y)

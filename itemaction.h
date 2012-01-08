@@ -28,6 +28,7 @@ private:
 
 private slots:
     void onTypeActionChange(int);
+    void onTargetActionChange(QString);
 };
 
 #endif // ITEMACTION_H

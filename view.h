@@ -63,6 +63,7 @@ private slots:
     void AddButton();
     void AddText();
     void AddTogleButton();
+    void AddDevice();
 
     void AddPage();
     void ChangeTabName();
@@ -72,6 +73,7 @@ private:
     QToolButton *btnAddTogleButton;
     QToolButton *btnAddText;
     QToolButton *btnAddPage;
+    QToolButton *btnAddDevice;
     QToolButton *btnSave;
     QTabWidget  *tabWidget;
 

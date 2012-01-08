@@ -13,7 +13,9 @@ HEADERS += mainwindow.h view.h \
     page.h \
     pageproperties.h \
     lirc.h \
-    device.h
+    device.h \
+    lircdevice.h \
+    addeditdevicedialog.h
 SOURCES += main.cpp \
     itemmanager.cpp \
     project.cpp \
@@ -27,7 +29,9 @@ SOURCES += main.cpp \
     page.cpp \
     pageproperties.cpp \
     lirc.cpp \
-    device.cpp
+    device.cpp \
+    lircdevice.cpp \
+    addeditdevicedialog.cpp
 SOURCES += mainwindow.cpp view.cpp
 
 contains(QT_CONFIG, opengl):QT += opengl
@@ -36,3 +40,6 @@ build_all:!build_pass {
     CONFIG -= build_all
     CONFIG += release
 }
+
+FORMS += \
+    addeditdevicedialog.ui
