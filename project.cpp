@@ -1,8 +1,6 @@
+#include <QTextStream>
 #include "project.h"
 #include "parser.h"
-
-#include <QDebug>
-
 
 QString Project::PathToProject = "/home/marinas/MECS/projects/detsad/rootfs/";
 const QString Project::m_LircdConfPath = "etc/lirc/lircd.conf";
@@ -10,6 +8,7 @@ const QString Project::m_LircdConfPath = "etc/lirc/lircd.conf";
 const QString Project::ImagesDirectory = QString("/Images");
 QMap<QString, Lirc *> Project::m_lircConfiges;
 QMap<QString, Device*> Project::m_devices;
+
 Project::Project()
 {
 }
@@ -59,7 +58,6 @@ Lirc *Project::GetLirc(QString name)
 void Project::updateLircConfiges()
 {
     QStringList list = Parser::Parse(Project::LircdConfPath(), Lirc::CommandSeparator);
-    qDebug() << Project::LircdConfPath();
 
     foreach (QString rawString, list)
     {
@@ -70,10 +68,18 @@ void Project::updateLircConfiges()
     }
 }
 
+void Project::generateDeviceFile(Device *device)
+{
+    QFile file(device->GetFileName());
+    file.open(QIODevice::WriteOnly | QIODevice::Text);
+    QTextStream out(&file);
+    out.setCodec("Windows-1251");
+    out << device->Save();
+    file.close();
+}
 
 void Project::AddDevice(Device *device)
 {
-    qDebug() << "Add device";
     m_devices.insert(device->GetName(), device);
 }
 
@@ -91,4 +97,11 @@ QStringList Project::GetDeviceCommands(QString deviceName)
     if (m_devices.contains(deviceName))
         return m_devices[deviceName]->GetCommands();
     return QStringList();
+}
+
+void Project::GenerateDevicesFile()
+{
+    foreach (Device *device, m_devices) {
+        generateDeviceFile(device);
+    }
 }

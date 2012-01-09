@@ -26,12 +26,14 @@ public:
     static void AddDevice(Device *device);
     static QStringList GetDevices();
     static QStringList GetDeviceCommands(QString deviceName);
+    static void GenerateDevicesFile();
 
 private:
     static const QString m_LircdConfPath;
     static QMap<QString, Lirc *> m_lircConfiges;
     static QMap<QString, Device*> m_devices;
     static void updateLircConfiges();
+    static void generateDeviceFile(Device *device);
 
 };
 

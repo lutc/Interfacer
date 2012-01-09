@@ -14,6 +14,7 @@ public:
     virtual QString Save() = 0;
     QStringList GetCommands();
     QString GetName(){return m_name;}
+    QString GetFileName(){return (m_name + m_filenameAppendix).toLower();}
     void SetFileNameAppendix(QString appendix){m_filenameAppendix = appendix;}
 signals:
 

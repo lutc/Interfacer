@@ -20,7 +20,9 @@ QString LircDevice::Save()
                    "file: \"/var/run/lirc/lircd\"\n" \
                    "query-period: %1\n" \
                    "timeout: %2\n\n").arg(m_name).arg(m_queryPeriod).arg(m_timeout);
-
+    foreach (QString commands, m_commands) {
+        result += commands;
+    }
     return result;
 }
 
@@ -37,7 +39,7 @@ void LircDevice::addCommand(QString commandName, QString)
                 "           send %1 (\"SEND_STOP %2 %0\" nl)\n" \
                 "       }\n" \
                 "   }\n" \
-                "}\n"
+                "}\n\n"
                 ).arg(commandName).arg(m_name).arg(m_name.toLower());
 
     m_commands.insert(commandName, command);

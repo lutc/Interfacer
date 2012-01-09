@@ -1,7 +1,8 @@
 #include "itemmanager.h"
 #include <QMutex>
 #include <QFile>
-#include <QFileInfo>
+
+#include "project.h"
 
 ItemManager* ItemManager::m_instance = 0;
 
@@ -37,7 +38,7 @@ ItemManager *ItemManager::Instance()
 
 void ItemManager::GenerateInterface()
 {
-
+    Project::GenerateDevicesFile();
     QFile file("interface");
     file.open(QIODevice::WriteOnly | QIODevice::Text);
     QTextStream out(&file);
@@ -53,8 +54,6 @@ void ItemManager::GenerateInterface()
             out << item->Save();
     }
 
-    QFileInfo *info = new QFileInfo(file);
-    qDebug() << "Generated" << info->absoluteFilePath();
     file.close();
 }
 
