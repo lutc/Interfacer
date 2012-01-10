@@ -3,9 +3,17 @@
 
 #include "project.h"
 
+#include <QDebug>
 ItemAction::ItemAction(QObject *parent) :
     QObject(parent)
 {
+}
+
+void ItemAction::operator =(ItemAction &from)
+{
+    m_typeAction = from.m_typeAction;
+    m_targetAction = from.m_targetAction;
+    m_action = from.m_action;
 }
 
 QHBoxLayout *ItemAction::GetLayout()
@@ -42,6 +50,7 @@ QHBoxLayout *ItemAction::GetLayout()
     actionLayout->addWidget(m_cmbAction);
 
     onTypeActionChange(m_cmbTypeAction->currentIndex());
+    onTargetActionChange(m_targetAction);
     return actionLayout;
 }
 

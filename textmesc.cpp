@@ -30,6 +30,11 @@ void TextMESC::AcceptWidgetsProperties()
 
 }
 
+void TextMESC::Copy(CommonItemMECS *from)
+{
+    CommonItemMECS::Copy(from);
+}
+
 
 QString TextMESC::Save()
 {

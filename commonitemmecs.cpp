@@ -52,7 +52,7 @@ int CommonItemMECS::stepOfGrid = 25;
 CommonItemMECS::CommonItemMECS(int x, int y):
     m_itemFlags(Qt::AlignCenter),
     m_width(200), m_height(100),
-    m_removed(false)
+    m_removed(false), m_init(false)
 {
     this->x = x;
     this->y = y;
@@ -178,6 +178,13 @@ QString CommonItemMECS::getBackgroundImage()
 bool CommonItemMECS::isRemoved()
 {
     return m_removed;
+}
+
+void CommonItemMECS::Copy(CommonItemMECS *from)
+{
+    m_width = from->getWidth();
+    m_height = from->getHeight();
+    setBackgroundImage(from->getBackgroundImage());
 }
 
 QString CommonItemMECS::Save()

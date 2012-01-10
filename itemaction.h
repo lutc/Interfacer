@@ -10,6 +10,7 @@ class ItemAction : public QObject
     Q_OBJECT
 public:
     explicit ItemAction(QObject *parent = 0);
+    void operator =(ItemAction &);
     QHBoxLayout *GetLayout();
     QString ToString();
 signals:

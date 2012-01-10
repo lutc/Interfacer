@@ -5,6 +5,7 @@
 #include <QtGui/QComboBox>
 #include <QtGui/QLineEdit>
 #include <QDialogButtonBox>
+#include <QCheckBox>
 #include "commonitemmecs.h"
 
 class InterfaceItemProperties : public QDialog
@@ -21,11 +22,14 @@ public slots:
 
 private:
     CommonItemMECS      *m_item;
+    static CommonItemMECS *m_DefaultItem;
+    static bool isDefault;
 
     QDialogButtonBox    *buttonBox;
     QLineEdit           *txtWidth;
     QLineEdit           *txtHeight;
     QLineEdit           *txtText;
+    QCheckBox           *chkSaveAsDefault;
 };
 
 #endif // ITEMPROPERTIES_H

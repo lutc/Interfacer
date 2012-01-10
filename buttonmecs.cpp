@@ -11,6 +11,14 @@ ButtonMECS::ButtonMECS(int x, int y, bool enableAction):
     this->color = QColor(255, 0, 0);
     m_onClickAction = new ItemAction();
 }
+void ButtonMECS::Copy(CommonItemMECS *from)
+{
+    ButtonMECS *temp = (ButtonMECS *)from;
+    m_downImage = temp->m_downImage;
+    m_heldImage = temp->m_heldImage;
+    *m_onClickAction = *(temp->m_onClickAction);
+    CommonItemMECS::Copy(from);
+}
 
 QString ButtonMECS::GetName()
 {
@@ -25,6 +33,7 @@ QString ButtonMECS::GetTextName()
 QGridLayout *ButtonMECS::GetPropertiesWidgets()
 {
     QLabel *lblLabelUpImage = new QLabel("Up Image:");
+    lblLabelUpImage->setFixedWidth(120);
     m_cmbUpImage = new QComboBox;
     m_cmbUpImage->addItem("");
     m_cmbUpImage->addItems(Project::GetImages());

@@ -70,11 +70,14 @@ public:
     QString getText( );
     QString getBackgroundImage( );
     bool isRemoved();
+    bool isInitialized(){return m_init;}
+    void setInitialized(){m_init = true;}
 
     virtual QString GetName() = 0;
     virtual QString GetTextName() = 0;
     virtual QGridLayout *GetPropertiesWidgets() = 0;
     virtual void AcceptWidgetsProperties() = 0;
+    virtual void Copy(CommonItemMECS *);
 
 protected:
     QColor color;
@@ -102,6 +105,7 @@ private:
     int snapToGrid(qreal );
 
     bool m_removed;
+    bool m_init;
 };
 
 #endif

@@ -12,6 +12,7 @@ public:
 
     QGridLayout *GetPropertiesWidgets();
     void AcceptWidgetsProperties();
+    void Copy(CommonItemMECS *);
 
     virtual QString Save();
 };

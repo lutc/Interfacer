@@ -12,7 +12,7 @@ class ButtonMECS : public CommonItemMECS
 {
 public:
     ButtonMECS(int, int, bool enableAction = true);
-
+    void Copy(CommonItemMECS *);
     QString GetName();
     QString GetTextName();
     virtual QGridLayout *GetPropertiesWidgets();
