@@ -18,8 +18,10 @@ PageProperties::PageProperties(Page *item) :
     m_cmbBackgroundImage = new QComboBox;
     m_cmbBackgroundImage->addItem("");
     m_cmbBackgroundImage->addItems(Project::GetImages());
-    if (!item->Name().isEmpty())
-        m_cmbBackgroundImage->setCurrentIndex(m_cmbBackgroundImage->findText(item->Name()));
+
+    if (!item->Background().isEmpty())
+        m_cmbBackgroundImage->setCurrentIndex(
+                    m_cmbBackgroundImage->findText(item->Background()));
 
     QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok
                                      | QDialogButtonBox::Cancel);

@@ -11,6 +11,7 @@ public:
     QString Name();
     void SetName(QString);
     void setBackground(QString);
+    QString Background() {return m_background;}
     QString Save();
 protected:
     void drawBackground(QPainter *painter, const QRectF &);
