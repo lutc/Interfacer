@@ -56,6 +56,7 @@ MainWindow::MainWindow(QWidget *parent)
     setLayout(layout);
 
     setWindowTitle(tr("Interfacer"));
+
 //    LircDevice *device = new LircDevice("lifeSize", NULL);
 
 //    Project::GetLircComands("lifesize");

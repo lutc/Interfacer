@@ -73,7 +73,7 @@ void Project::generateDeviceFile(Device *device)
     QFile file(device->GetFileName());
     file.open(QIODevice::WriteOnly | QIODevice::Text);
     QTextStream out(&file);
-    out.setCodec("Windows-1251");
+//    out.setCodec("Windows-1251");
     out << device->Save();
     file.close();
 }

@@ -2,6 +2,7 @@
 #include "ui_addeditdevicedialog.h"
 #include "project.h"
 #include "lircdevice.h"
+#include "comdevice.h"
 
 #include <QDebug>
 AddEditDeviceDialog::AddEditDeviceDialog(Device *device) :
@@ -27,12 +28,30 @@ AddEditDeviceDialog::~AddEditDeviceDialog()
 
 void AddEditDeviceDialog::onChangeCmbType(int type)
 {
-    ui->cmbLircDevices->setEnabled(AddEditDeviceDialog::Lirc == type);
-    ui->lblLircDevices->setEnabled(AddEditDeviceDialog::Lirc == type);
-    ui->txtName->setEnabled(AddEditDeviceDialog::Lirc != type);
-    ui->lblName->setEnabled(AddEditDeviceDialog::Lirc != type);
-    ui->btnAddMethod->setEnabled(AddEditDeviceDialog::Lirc != type);
-    ui->btnRemoveMethod->setEnabled(AddEditDeviceDialog::Lirc != type);
+    bool enabledLircControls = AddEditDeviceDialog::Lirc == type;
+    bool enabledComControls = type == AddEditDeviceDialog::Com;
+
+    ui->cmbLircDevices->setVisible(enabledLircControls);
+    ui->lblLircDevices->setVisible(enabledLircControls);
+    ui->txtName->setEnabled(!enabledLircControls);
+    ui->lblName->setEnabled(!enabledLircControls);
+    ui->btnAddMethod->setEnabled(!enabledLircControls);
+    ui->btnRemoveMethod->setEnabled(!enabledLircControls);
+    ui->horizontalLayout->setEnabled(enabledLircControls);
+
+    ui->lblParity->setVisible(enabledComControls);
+    ui->cmbParity->setVisible(enabledComControls);
+    ui->lblCaseSens->setVisible(enabledComControls);
+    ui->chkCaseSens->setVisible(enabledComControls);
+
+    ui->lblSpeed->setVisible(enabledComControls);
+    ui->cmbSpeed->setVisible(enabledComControls);
+    ui->lblTimeout->setVisible(enabledComControls);
+    ui->txtTimeout->setVisible(enabledComControls);
+    ui->lblQueryPeriod->setVisible(enabledComControls);
+    ui->txtQueryPeriod->setVisible(enabledComControls);
+    ui->lblPort->setVisible(enabledComControls);
+    ui->cmbPort->setVisible(enabledComControls);
 }
 
 void AddEditDeviceDialog::onChangeCmbLircDevice(QString deviceName)
@@ -51,11 +70,16 @@ void AddEditDeviceDialog::accept()
         case (AddEditDeviceDialog::Lirc):
             m_device = new LircDevice(ui->txtName->text(), Project::GetLirc(ui->txtName->text()));
             break;
+
+        case (AddEditDeviceDialog::Com):
+            m_device = new ComDevice(ui->txtName->text());
         default:
 
             break;
         }
     }
+    m_device->SetDeviceName(ui->txtDeviceName->text());
+
     //TODO: Add device editing
     if (m_device != NULL)
         Project::AddDevice(m_device);

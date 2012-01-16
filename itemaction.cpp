@@ -32,13 +32,9 @@ QHBoxLayout *ItemAction::GetLayout()
     m_cmbTargetAction->addItem("");
     m_cmbTargetAction->addItems(Project::GetDevices());
 
-    if (!m_targetAction.isEmpty())
-        m_cmbTargetAction->setEditText(m_targetAction);
-
     m_cmbAction = new QComboBox;
     m_cmbAction->setEditable(true);
-    if (!m_action.isEmpty())
-        m_cmbAction->setEditText(m_action);
+
     connect(m_cmbTypeAction, SIGNAL(currentIndexChanged(int)),
             this, SLOT(onTypeActionChange(int)));
     connect(m_cmbTargetAction, SIGNAL(currentIndexChanged(QString)),
@@ -51,6 +47,11 @@ QHBoxLayout *ItemAction::GetLayout()
 
     onTypeActionChange(m_cmbTypeAction->currentIndex());
     onTargetActionChange(m_targetAction);
+
+    if (!m_targetAction.isEmpty())
+        m_cmbTargetAction->setEditText(m_targetAction);
+    if (!m_action.isEmpty())
+        m_cmbAction->setEditText(m_action);
     return actionLayout;
 }
 

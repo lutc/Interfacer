@@ -69,13 +69,14 @@ private slots:
     void ChangeTabName();
 
 private:
-    QToolButton *btnAddButton;
-    QToolButton *btnAddTogleButton;
-    QToolButton *btnAddText;
-    QToolButton *btnAddPage;
-    QToolButton *btnAddDevice;
-    QToolButton *btnSave;
-    QTabWidget  *tabWidget;
+    QToolButton *m_btnAddButton;
+    QToolButton *m_btnAddTogleButton;
+    QToolButton *m_btnAddText;
+    QToolButton *m_btnAddPage;
+    QToolButton *m_btnAddDevice;
+    QToolButton *m_btnLoad;
+    QToolButton *m_btnSave;
+    QTabWidget  *m_tabWidget;
 
     void AddItem(CommonItemMECS::ItemTypes, int, int);
 

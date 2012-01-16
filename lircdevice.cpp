@@ -5,8 +5,8 @@
 LircDevice::LircDevice(QString name, Lirc *lirc) :
     Device(name)
 {
-    m_timeout = 300;
-    m_queryPeriod = 10000;
+    m_timeout = "300";
+    m_queryPeriod = "10000";
     m_lirc = lirc;
     foreach (QString command, lirc->GetCommands())
     {

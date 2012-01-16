@@ -63,46 +63,50 @@ View::View(QWidget *parent)
     // Label layout
     QHBoxLayout *labelLayout = new QHBoxLayout;
 
-    btnAddButton = new QToolButton;
-    btnAddButton->setText("Add button");
-    btnAddTogleButton = new QToolButton;
-    btnAddTogleButton->setText("Add TogleButton");
-    btnAddText = new QToolButton;
-    btnAddText->setText("Add Text");
-    btnAddPage = new QToolButton;
-    btnAddPage->setText("Add page");
-    btnAddDevice = new QToolButton;
-    btnAddDevice->setText("Add Device");
+    m_btnAddButton = new QToolButton;
+    m_btnAddButton->setText("Add button");
+    m_btnAddTogleButton = new QToolButton;
+    m_btnAddTogleButton->setText("Add TogleButton");
+    m_btnAddText = new QToolButton;
+    m_btnAddText->setText("Add Text");
+    m_btnAddPage = new QToolButton;
+    m_btnAddPage->setText("Add page");
+    m_btnAddDevice = new QToolButton;
+    m_btnAddDevice->setText("Add Device");
 
-    btnSave = new QToolButton;
-    btnSave->setText("Save");
+    m_btnLoad = new QToolButton;
+    m_btnLoad->setText("Load");
+    m_btnSave = new QToolButton;
+    m_btnSave->setText("Save");
 
-    labelLayout->addWidget(btnAddButton);
-    labelLayout->addWidget(btnAddTogleButton);
-    labelLayout->addWidget(btnAddText);
+    labelLayout->addWidget(m_btnAddButton);
+    labelLayout->addWidget(m_btnAddTogleButton);
+    labelLayout->addWidget(m_btnAddText);
     labelLayout->addSpacing(15);
-    labelLayout->addWidget(btnAddPage);
-    labelLayout->addWidget(btnAddDevice);
+    labelLayout->addWidget(m_btnAddPage);
+    labelLayout->addWidget(m_btnAddDevice);
     labelLayout->addStretch();
-    labelLayout->addWidget(btnSave);
+    labelLayout->addWidget(m_btnLoad);
+    labelLayout->addWidget(m_btnSave);
 
-    tabWidget = new QTabWidget;
+    m_tabWidget = new QTabWidget;
     AddPage();
 
     QGridLayout *topLayout = new QGridLayout;
     topLayout->addLayout(labelLayout, 0, 0);
 
-    topLayout->addWidget(tabWidget, 1, 0);
+    topLayout->addWidget(m_tabWidget, 1, 0);
 
 
     setLayout(topLayout);
 
-    connect(btnAddButton, SIGNAL(clicked()), this, SLOT(AddButton()));
-    connect(btnAddTogleButton, SIGNAL(clicked()), this, SLOT(AddTogleButton()));
-    connect(btnAddText, SIGNAL(clicked()), this, SLOT(AddText()));
-    connect(btnAddPage, SIGNAL(clicked()), this, SLOT(AddPage()));
-    connect (btnSave, SIGNAL(clicked()), ItemManager::Instance(), SLOT(GenerateInterface()));
-    connect(btnAddDevice, SIGNAL(clicked()), this, SLOT(AddDevice()));
+    connect(m_btnAddButton, SIGNAL(clicked()), this, SLOT(AddButton()));
+    connect(m_btnAddTogleButton, SIGNAL(clicked()), this, SLOT(AddTogleButton()));
+    connect(m_btnAddText, SIGNAL(clicked()), this, SLOT(AddText()));
+    connect(m_btnAddPage, SIGNAL(clicked()), this, SLOT(AddPage()));
+    connect(m_btnSave, SIGNAL(clicked()), ItemManager::Instance(), SLOT(GenerateInterface()));
+    connect(m_btnLoad, SIGNAL(clicked()), ItemManager::Instance(), SLOT(LoadFromFile()));
+    connect(m_btnAddDevice, SIGNAL(clicked()), this, SLOT(AddDevice()));
 }
 
 
@@ -149,7 +153,7 @@ void View::AddItem(CommonItemMECS::ItemTypes type, int x, int y)
         return;
     }
 
-    QGraphicsView *graphicsView = qobject_cast<QGraphicsView *>(tabWidget->currentWidget());
+    QGraphicsView *graphicsView = qobject_cast<QGraphicsView *>(m_tabWidget->currentWidget());
     graphicsView->scene()->addItem(item);
     ItemManager::Instance()->AddItem((CommonItemMECS*)item);
 }
@@ -171,14 +175,14 @@ void View::AddPage()
     #endif
     graphicsView->setRenderHint(QPainter::Antialiasing, true);
 
-    tabWidget->setUpdatesEnabled(false);
-    tabWidget->addTab(graphicsView, "Main");
+    m_tabWidget->setUpdatesEnabled(false);
+    m_tabWidget->addTab(graphicsView, "Main");
 
-    tabWidget->setUpdatesEnabled(true);
+    m_tabWidget->setUpdatesEnabled(true);
 }
 
 void View::ChangeTabName()
 {
-    tabWidget->setTabText(tabWidget->currentIndex(),
-                          ((Page *)qobject_cast<QGraphicsView *>(tabWidget->currentWidget())->scene())->Name());
+    m_tabWidget->setTabText(m_tabWidget->currentIndex(),
+                          ((Page *)qobject_cast<QGraphicsView *>(m_tabWidget->currentWidget())->scene())->GetName());
 }

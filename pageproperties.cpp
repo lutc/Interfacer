@@ -12,16 +12,16 @@ PageProperties::PageProperties(Page *item) :
     QLabel *lblLabelName = new QLabel("Name:");
     m_txtName = new QLineEdit;
     m_txtName->setAlignment(Qt::AlignRight);
-    m_txtName->setText(m_item->Name());
+    m_txtName->setText(m_item->GetName());
 
     QLabel *lblLabelBackgroundImage = new QLabel("Image:");
     m_cmbBackgroundImage = new QComboBox;
     m_cmbBackgroundImage->addItem("");
     m_cmbBackgroundImage->addItems(Project::GetImages());
 
-    if (!item->Background().isEmpty())
+    if (!item->GetBackground().isEmpty())
         m_cmbBackgroundImage->setCurrentIndex(
-                    m_cmbBackgroundImage->findText(item->Background()));
+                    m_cmbBackgroundImage->findText(item->GetBackground()));
 
     QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok
                                      | QDialogButtonBox::Cancel);
@@ -40,7 +40,7 @@ PageProperties::PageProperties(Page *item) :
 
 void PageProperties::accept()
 {
-    m_item->setBackground(m_cmbBackgroundImage->currentText());
+    m_item->SetBackground(m_cmbBackgroundImage->currentText());
     m_item->SetName(m_txtName->text());
 
     QDialog::accept();

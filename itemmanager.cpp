@@ -3,6 +3,7 @@
 #include <QFile>
 
 #include "project.h"
+#include "parser.h"
 
 ItemManager* ItemManager::m_instance = 0;
 
@@ -59,7 +60,21 @@ void ItemManager::GenerateInterface()
 
 void ItemManager::LoadFromFile()
 {
+    QStringList list = Parser::Parse("/home/marinas/MECS/projects/detsad/rootfs/interface", "[");
+//    qDebug() << list;
+    foreach (QString item, list) {
+        int pos = 0;
+        QRegExp rxType("^(\\w+)\\]");
+        pos = rxType.indexIn(item, pos) + rxType.matchedLength();
 
+        QString type = rxType.cap(1);
+        if (type.compare("Page") == 0)
+        {
+            Page *page = new Page();
+            page->Parse(item);
+            AddItem(page);
+        }
+    }
 }
 
 QStringList ItemManager::GetPages()
@@ -67,7 +82,7 @@ QStringList ItemManager::GetPages()
     QStringList list;
     foreach(Page *page, pages)
     {
-        list.append(page->Name());
+        list.append(page->GetName());
     }
     return list;
 }

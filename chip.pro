@@ -15,7 +15,8 @@ HEADERS += mainwindow.h view.h \
     lirc.h \
     device.h \
     lircdevice.h \
-    addeditdevicedialog.h
+    addeditdevicedialog.h \
+    comdevice.h
 SOURCES += main.cpp \
     itemmanager.cpp \
     project.cpp \
@@ -31,7 +32,8 @@ SOURCES += main.cpp \
     lirc.cpp \
     device.cpp \
     lircdevice.cpp \
-    addeditdevicedialog.cpp
+    addeditdevicedialog.cpp \
+    comdevice.cpp
 SOURCES += mainwindow.cpp view.cpp
 
 contains(QT_CONFIG, opengl):QT += opengl

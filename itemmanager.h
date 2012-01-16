@@ -16,13 +16,13 @@ public:
     int AddItem(CommonItemMECS *);
     int AddItem(Page *);
 
-    void LoadFromFile();
     QStringList GetPages();
 
 signals:
 
 public slots:
     void GenerateInterface();
+    void LoadFromFile();
 
 private:
     ItemManager();

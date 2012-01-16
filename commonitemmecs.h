@@ -78,6 +78,7 @@ public:
     virtual QGridLayout *GetPropertiesWidgets() = 0;
     virtual void AcceptWidgetsProperties() = 0;
     virtual void Copy(CommonItemMECS *);
+    virtual void Parse(QString );
 
 protected:
     QColor color;

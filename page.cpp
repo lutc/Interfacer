@@ -7,6 +7,8 @@
 #include "project.h"
 #include "pageproperties.h"
 
+#include <QDebug>
+#include <QMetaProperty>
 Page::Page():
     m_name("Main")
 {
@@ -36,18 +38,20 @@ void Page::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
     properties->show();
 }
 
-QString Page::Name()
+QString Page::GetName()
 {
     return m_name;
 }
 void Page::SetName(QString newName)
 {
+    qDebug() << newName;
     m_name = newName;
     emit selectionChanged();
 //    emit nameChanged();
 }
-void Page::setBackground(QString path)
+void Page::SetBackground(QString path)
 {
+    qDebug() << path;
     m_background = path;
     QString backgroundImagePath =
             Project::PathToProject + Project::ImagesDirectory
@@ -59,6 +63,17 @@ QString Page::Save()
 {
     return QString("[Page]\n" \
             "Name = %0\n" \
-                   "Background = Images/%1\n\n").arg(Name()).arg(m_background);
+                   "Background = Images/%1\n\n").arg(GetName()).arg(m_background);
 
+}
+
+void Page::Parse(QString from)
+{
+    QStringList list = from.split("\n", QString::SkipEmptyParts);
+    list.removeFirst(); // remove element with "type"
+    foreach (QString property, list){
+        QStringList propertylist = property.split("=");
+        this->setProperty(propertylist.at(0).trimmed().toAscii(),
+                                     propertylist.at(1).trimmed());
+    }
 }

@@ -187,6 +187,11 @@ void CommonItemMECS::Copy(CommonItemMECS *from)
     setBackgroundImage(from->getBackgroundImage());
 }
 
+void CommonItemMECS::Parse(QString )
+{
+
+}
+
 QString CommonItemMECS::Save()
 {
     QString result = QString(
@@ -196,7 +201,7 @@ QString CommonItemMECS::Save()
 
         "Font = Images/arial.ttf\n" \
         "FontSize = 20\n" \
-                "Color = white\n").arg(((Page*)scene())->Name()).arg(scenePos().x()).arg(scenePos().y());
+                "Color = white\n").arg(((Page*)scene())->GetName()).arg(scenePos().x()).arg(scenePos().y());
 
     return result;
 }

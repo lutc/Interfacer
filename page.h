@@ -6,13 +6,18 @@
 
 class Page : public QGraphicsScene
 {
+    Q_OBJECT
+    Q_PROPERTY(QString Name READ GetName WRITE SetName)
+    Q_PROPERTY(QString Background READ GetBackground WRITE SetBackground)
 public:
+
     Page();
-    QString Name();
+    QString GetName();
     void SetName(QString);
-    void setBackground(QString);
-    QString Background() {return m_background;}
+    void SetBackground(QString);
+    QString GetBackground() {return m_background;}
     QString Save();
+    void Parse(QString from);
 protected:
     void drawBackground(QPainter *painter, const QRectF &);
 

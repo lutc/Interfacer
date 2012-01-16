@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QMap>
 #include <QStringList>
+#include <QGridLayout>
 
 class Device : public QObject
 {
@@ -14,17 +15,17 @@ public:
     virtual QString Save() = 0;
     QStringList GetCommands();
     QString GetName(){return m_name;}
-    QString GetFileName(){return (m_name + m_filenameAppendix).toLower();}
-    void SetFileNameAppendix(QString appendix){m_filenameAppendix = appendix;}
+    QString GetFileName(){return (m_name + m_deviceName).toLower();}
+    void SetDeviceName(QString deviceName){m_deviceName = deviceName;}
 signals:
 
 public slots:
 
 protected:
-    int m_queryPeriod;
-    int m_timeout;
+    QString m_queryPeriod;
+    QString m_timeout;
     QString m_name;
-    QString m_filenameAppendix;
+    QString m_deviceName;
     QMap<QString, QString> m_commands;
 
     virtual void addCommand(QString name, QString command = "") = 0;

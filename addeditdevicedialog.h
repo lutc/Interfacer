@@ -2,8 +2,10 @@
 #define ADDEDITDEVICEDIALOG_H
 
 #include <QDialog>
+#include <QGridLayout>
 
-#include "device.h"
+#include "lircdevice.h"
+#include "comdevice.h"
 
 namespace Ui {
 class AddEditDeviceDialog;
@@ -15,6 +17,7 @@ class AddEditDeviceDialog : public QDialog
 
 public:
     enum {Lirc, TcpIp, Com, Usb} types;
+
     explicit AddEditDeviceDialog(Device *);
     ~AddEditDeviceDialog();
 
