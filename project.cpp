@@ -2,7 +2,7 @@
 #include "project.h"
 #include "parser.h"
 
-QString Project::PathToProject = "/home/marinas/MECS/projects/detsad/rootfs/";
+QString Project::PathToProject = "/home/lutc/MECS/projects/detsad/rootfs/";
 const QString Project::m_LircdConfPath = "etc/lirc/lircd.conf";
 
 const QString Project::ImagesDirectory = QString("/Images");

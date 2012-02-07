@@ -60,7 +60,7 @@ void ItemManager::GenerateInterface()
 
 void ItemManager::LoadFromFile()
 {
-    QStringList list = Parser::Parse("/home/marinas/MECS/projects/detsad/rootfs/interface", "[");
+    QStringList list = Parser::Parse("/home/lutc/MECS/projects/detsad/rootfs/interface", "[");
 //    qDebug() << list;
     foreach (QString item, list) {
         int pos = 0;
