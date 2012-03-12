@@ -85,3 +85,8 @@ void AddEditDeviceDialog::accept()
         Project::AddDevice(m_device);
     QDialog::accept();
 }
+
+void AddEditDeviceDialog::on_btnAddMethod_clicked()
+{
+    qDebug() << "clicked";
+}

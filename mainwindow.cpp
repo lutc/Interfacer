@@ -62,7 +62,7 @@ MainWindow::MainWindow(QWidget *parent)
 //    Project::GetLircComands("lifesize");
 
 //    QString dir = QFileDialog::getExistingDirectory(this, tr("Select Project Directory"),
-//                                                    "/home/marinas/MECS/projects/detsad/rootfs/",
+//                                                    "/home/lutc/MECS/projects/petrogradsk.adm/rootfs/",
 //                                                    QFileDialog::ShowDirsOnly
 //                                                    | QFileDialog::DontResolveSymlinks);
 

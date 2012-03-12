@@ -30,6 +30,8 @@ public slots:
     void onChangeCmbType(int);
     void onChangeCmbLircDevice(QString);
     void accept();
+private slots:
+    void on_btnAddMethod_clicked();
 };
 
 #endif // ADDEDITDEVICEDIALOG_H

@@ -2,7 +2,7 @@
 #include "project.h"
 #include "parser.h"
 
-QString Project::PathToProject = "/home/lutc/MECS/projects/detsad/rootfs/";
+QString Project::PathToProject = "/home/lutc/MECS/projects/petrogradsk.adm/rootfs/";
 const QString Project::m_LircdConfPath = "etc/lirc/lircd.conf";
 
 const QString Project::ImagesDirectory = QString("/Images");
@@ -17,6 +17,10 @@ Project::Project()
 QStringList Project::GetImages()
 {
     QDir *dir = new QDir(Project::PathToProject + Project::ImagesDirectory);
+
+    // TODO throw exception
+    //if (!dir->exists())
+    //    throw ;
 //    dir->setFilter(QDir::NoDot | QDir::NoDotDot);
     QStringList list = dir->entryList();
     list.removeFirst();
