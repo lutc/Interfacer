@@ -46,6 +46,7 @@
 
 #include "commonitemmecs.h"
 #include "itemmanager.h"
+#include <QComboBox>
 
 QT_FORWARD_DECLARE_CLASS(QGraphicsView)
 QT_FORWARD_DECLARE_CLASS(QLabel)
@@ -68,6 +69,10 @@ private slots:
     void AddPage();
     void ChangeTabName();
 
+public slots:
+    void UpdateDevices(QStringList);
+    void AddMethod();
+
 private:
     QToolButton *m_btnAddButton;
     QToolButton *m_btnAddTogleButton;
@@ -76,6 +81,9 @@ private:
     QToolButton *m_btnAddDevice;
     QToolButton *m_btnLoad;
     QToolButton *m_btnSave;
+    QComboBox   *m_cmbDevices;
+    QToolButton *m_btnAddMethod;
+
     QTabWidget  *m_tabWidget;
 
     void AddItem(CommonItemMECS::ItemTypes, int, int);

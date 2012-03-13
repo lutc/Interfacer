@@ -43,7 +43,7 @@
 #include <QtGui>
 
 #include "view.h"
-#include "project.h"
+
 #include "lircdevice.h"
 
 MainWindow::MainWindow(QWidget *parent)
@@ -56,6 +56,9 @@ MainWindow::MainWindow(QWidget *parent)
     setLayout(layout);
 
     setWindowTitle(tr("Interfacer"));
+
+
+
 
 //    LircDevice *device = new LircDevice("lifeSize", NULL);
 

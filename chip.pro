@@ -16,7 +16,9 @@ HEADERS += mainwindow.h view.h \
     device.h \
     lircdevice.h \
     addeditdevicedialog.h \
-    comdevice.h
+    comdevice.h \
+    pjlinkdevice.h \
+    addmethoddialog.h
 SOURCES += main.cpp \
     itemmanager.cpp \
     project.cpp \
@@ -33,7 +35,9 @@ SOURCES += main.cpp \
     device.cpp \
     lircdevice.cpp \
     addeditdevicedialog.cpp \
-    comdevice.cpp
+    comdevice.cpp \
+    pjlinkdevice.cpp \
+    addmethoddialog.cpp
 SOURCES += mainwindow.cpp view.cpp
 
 contains(QT_CONFIG, opengl):QT += opengl
@@ -44,4 +48,5 @@ build_all:!build_pass {
 }
 
 FORMS += \
-    addeditdevicedialog.ui
+    addeditdevicedialog.ui \
+    addmethoddialog.ui

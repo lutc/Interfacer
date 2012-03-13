@@ -3,6 +3,7 @@
 #include "project.h"
 #include "lircdevice.h"
 #include "comdevice.h"
+#include "pjlinkdevice.h"
 
 #include <QDebug>
 AddEditDeviceDialog::AddEditDeviceDialog(Device *device) :
@@ -26,24 +27,28 @@ AddEditDeviceDialog::~AddEditDeviceDialog()
     delete ui;
 }
 
+
 void AddEditDeviceDialog::onChangeCmbType(int type)
 {
+    ui->lstMethods->clear();
+    ui->txtName->clear();
     bool enabledLircControls = AddEditDeviceDialog::Lirc == type;
     bool enabledComControls = type == AddEditDeviceDialog::Com;
+
+    bool enabledPJLinkControls = type == AddEditDeviceDialog::PJLink;
+    bool enabledTcpControls = type == AddEditDeviceDialog::TcpIp;
 
     ui->cmbLircDevices->setVisible(enabledLircControls);
     ui->lblLircDevices->setVisible(enabledLircControls);
     ui->txtName->setEnabled(!enabledLircControls);
     ui->lblName->setEnabled(!enabledLircControls);
-    ui->btnAddMethod->setEnabled(!enabledLircControls);
-    ui->btnRemoveMethod->setEnabled(!enabledLircControls);
-    ui->horizontalLayout->setEnabled(enabledLircControls);
+    ui->lstMethods->setVisible(enabledLircControls);
+    ui->lblMethods->setVisible(enabledLircControls);
 
     ui->lblParity->setVisible(enabledComControls);
     ui->cmbParity->setVisible(enabledComControls);
     ui->lblCaseSens->setVisible(enabledComControls);
     ui->chkCaseSens->setVisible(enabledComControls);
-
     ui->lblSpeed->setVisible(enabledComControls);
     ui->cmbSpeed->setVisible(enabledComControls);
     ui->lblTimeout->setVisible(enabledComControls);
@@ -52,6 +57,12 @@ void AddEditDeviceDialog::onChangeCmbType(int type)
     ui->txtQueryPeriod->setVisible(enabledComControls);
     ui->lblPort->setVisible(enabledComControls);
     ui->cmbPort->setVisible(enabledComControls);
+
+    ui->lblIp->setVisible(enabledPJLinkControls || enabledTcpControls);
+    ui->frmIp->setVisible(enabledPJLinkControls || enabledTcpControls);
+
+    ui->lblPortTcp->setVisible(enabledTcpControls);
+    ui->spnPortTcp->setVisible(enabledTcpControls);
 }
 
 void AddEditDeviceDialog::onChangeCmbLircDevice(QString deviceName)
@@ -72,9 +83,13 @@ void AddEditDeviceDialog::accept()
             break;
 
         case (AddEditDeviceDialog::Com):
-            m_device = new ComDevice(ui->txtName->text());
+            m_device = new ComDevice(ui->txtName->text(), ui->cmbPort->currentText(), ui->cmbSpeed->currentText(), ui->cmbParity->currentText() );
+            break;
         default:
-
+            QString separatorIp(".");
+            QString ip = ui->spnIp0->text().append(separatorIp).append(ui->spnIp1->text()).append(separatorIp).
+                    append(ui->spnIp2->text()).append(separatorIp).append(ui->spnIp3->text());
+            m_device = new PJLinkDevice(ui->txtName->text(), ip);
             break;
         }
     }
@@ -82,11 +97,6 @@ void AddEditDeviceDialog::accept()
 
     //TODO: Add device editing
     if (m_device != NULL)
-        Project::AddDevice(m_device);
+        Project::Instance()->AddDevice(m_device);
     QDialog::accept();
-}
-
-void AddEditDeviceDialog::on_btnAddMethod_clicked()
-{
-    qDebug() << "clicked";
 }

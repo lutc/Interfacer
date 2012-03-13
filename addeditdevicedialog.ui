@@ -7,11 +7,17 @@
     <x>0</x>
     <y>0</y>
     <width>392</width>
-    <height>493</height>
+    <height>519</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Add device</string>
+  </property>
+  <property name="sizeGripEnabled">
+   <bool>true</bool>
+  </property>
+  <property name="modal">
+   <bool>true</bool>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="1" column="1">
@@ -39,6 +45,11 @@
        <string>Com-Usb</string>
       </property>
      </item>
+     <item>
+      <property name="text">
+       <string>PJLink device</string>
+      </property>
+     </item>
     </widget>
    </item>
    <item row="0" column="1">
@@ -61,7 +72,7 @@
      </property>
     </widget>
    </item>
-   <item row="11" column="0">
+   <item row="12" column="0">
     <widget class="QLabel" name="lblMethods">
      <property name="text">
       <string>Methods:</string>
@@ -78,50 +89,7 @@
      </property>
     </widget>
    </item>
-   <item row="14" column="1">
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
-      <spacer name="horizontalSpacer">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QPushButton" name="btnAddMethod">
-       <property name="maximumSize">
-        <size>
-         <width>40</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>+</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="btnRemoveMethod">
-       <property name="maximumSize">
-        <size>
-         <width>40</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>-</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item row="11" column="1">
+   <item row="12" column="1">
     <widget class="QListWidget" name="lstMethods"/>
    </item>
    <item row="2" column="0">
@@ -280,16 +248,112 @@
     </widget>
    </item>
    <item row="10" column="0">
-    <widget class="QLabel" name="label">
+    <widget class="QLabel" name="lblIp">
      <property name="text">
-      <string>PJLink device</string>
+      <string>IP</string>
      </property>
     </widget>
    </item>
    <item row="10" column="1">
-    <widget class="QCheckBox" name="checkBox">
+    <widget class="QFrame" name="frmIp">
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QSpinBox" name="spnIp0">
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+        <property name="maximum">
+         <number>255</number>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="lblDot0">
+        <property name="text">
+         <string>.</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QSpinBox" name="spnIp1">
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+        <property name="maximum">
+         <number>255</number>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="lblDot1">
+        <property name="text">
+         <string>.</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QSpinBox" name="spnIp2">
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+        <property name="maximum">
+         <number>255</number>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="lblDot2">
+        <property name="text">
+         <string>.</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QSpinBox" name="spnIp3">
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+        <property name="maximum">
+         <number>255</number>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="13" column="1">
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="11" column="0">
+    <widget class="QLabel" name="lblPortTcp">
      <property name="text">
-      <string/>
+      <string>Port</string>
+     </property>
+    </widget>
+   </item>
+   <item row="11" column="1">
+    <widget class="QSpinBox" name="spnPortTcp">
+     <property name="alignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+     </property>
+     <property name="maximum">
+      <number>65536</number>
      </property>
     </widget>
    </item>

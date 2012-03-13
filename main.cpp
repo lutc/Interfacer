@@ -42,6 +42,9 @@
 #include "mainwindow.h"
 
 #include <QApplication>
+#include <QFile>
+#include <QTextStream>
+#include "project.h"
 
 int main(int argc, char **argv)
 {
@@ -49,6 +52,16 @@ int main(int argc, char **argv)
 
     QApplication app(argc, argv);
     app.setAttribute(Qt::AA_DontCreateNativeWidgetSiblings);
+
+    QFile file("/home/lutc/MECS/projects/petrogradsk.adm/rootfs/controller/kramer.rs232");
+//    QFile file("/home/lutc/MECS/projects/petrogradsk.adm/rootfs/controller/christie.pjlink");
+    file.open(QIODevice::ReadOnly | QIODevice::Text);
+    QTextStream inStream(&file);
+    inStream.setCodec("Windows-1251");
+    QString rawData = inStream.readAll();
+
+    Project::Instance()->ParseDevice(rawData);
+
 
     MainWindow window;
     window.showMaximized();

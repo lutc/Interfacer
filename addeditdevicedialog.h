@@ -16,7 +16,7 @@ class AddEditDeviceDialog : public QDialog
     Q_OBJECT
 
 public:
-    enum {Lirc, TcpIp, Com, Usb} types;
+    enum {Lirc, TcpIp, Com, Usb, PJLink } types;
 
     explicit AddEditDeviceDialog(Device *);
     ~AddEditDeviceDialog();
@@ -26,12 +26,12 @@ private:
 
     Device *m_device;
 
+
 public slots:
     void onChangeCmbType(int);
     void onChangeCmbLircDevice(QString);
     void accept();
 private slots:
-    void on_btnAddMethod_clicked();
 };
 
 #endif // ADDEDITDEVICEDIALOG_H

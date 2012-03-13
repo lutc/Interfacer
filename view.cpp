@@ -54,6 +54,7 @@
 #include "page.h"
 #include "addeditdevicedialog.h"
 #include "project.h"
+#include "addmethoddialog.h"
 
 View::View(QWidget *parent)
     : QFrame(parent)
@@ -79,12 +80,24 @@ View::View(QWidget *parent)
     m_btnSave = new QToolButton;
     m_btnSave->setText("Save");
 
+    m_cmbDevices = new QComboBox;
+    m_cmbDevices->addItems(Project::GetDevices());
+    connect(Project::Instance(), SIGNAL(DevicesUpdated(QStringList)), this, SLOT(UpdateDevices(QStringList)));
+
+    m_btnAddMethod = new QToolButton;
+    m_btnAddMethod->setText("+");
+    m_btnAddMethod->setEnabled(!m_cmbDevices->currentText().isEmpty());
+    connect(m_btnAddMethod, SIGNAL(clicked()), this, SLOT(AddMethod()));
+
     labelLayout->addWidget(m_btnAddButton);
     labelLayout->addWidget(m_btnAddTogleButton);
     labelLayout->addWidget(m_btnAddText);
     labelLayout->addSpacing(15);
     labelLayout->addWidget(m_btnAddPage);
     labelLayout->addWidget(m_btnAddDevice);
+    labelLayout->addStretch();
+    labelLayout->addWidget(m_cmbDevices);
+    labelLayout->addWidget(m_btnAddMethod);
     labelLayout->addStretch();
     labelLayout->addWidget(m_btnLoad);
     labelLayout->addWidget(m_btnSave);
@@ -185,4 +198,24 @@ void View::ChangeTabName()
 {
     m_tabWidget->setTabText(m_tabWidget->currentIndex(),
                           ((Page *)qobject_cast<QGraphicsView *>(m_tabWidget->currentWidget())->scene())->GetName());
+}
+
+void View::UpdateDevices(QStringList devices)
+{
+    m_cmbDevices->clear();
+    m_cmbDevices->addItems(devices);
+    if (!m_cmbDevices->currentText().isEmpty())
+    {
+        m_btnAddMethod->setEnabled(true);
+    }
+}
+
+void View::AddMethod()
+{
+    AddMethodDialog *dlg = new AddMethodDialog(this);
+    if (QDialog::Accepted == dlg->exec())
+    {
+        Device *dev = Project::GetDevice(m_cmbDevices->currentText());
+        dev->addCommand(dlg->CommandName(), dlg->Command());
+    }
 }

@@ -7,7 +7,7 @@
 class ComDevice : public Device
 {
 public:
-    ComDevice(QString deviceName);
+    ComDevice(QString deviceName, QString port, QString speed, QString parity, QString characterSize = "8");
     QString Save();
     void Init();
     void addCommand(QString, QString);
@@ -17,7 +17,6 @@ private:
     QString m_speed;
     QString m_characterSize;
     QString m_parity;
-    QString m_caseSensitive;
 };
 
 #endif // COMDEVICE_H

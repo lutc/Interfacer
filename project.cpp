@@ -1,6 +1,9 @@
 #include <QTextStream>
 #include "project.h"
 #include "parser.h"
+#include <QDebug>
+
+#include "comdevice.h"
 
 QString Project::PathToProject = "/home/lutc/MECS/projects/petrogradsk.adm/rootfs/";
 const QString Project::m_LircdConfPath = "etc/lirc/lircd.conf";
@@ -8,6 +11,8 @@ const QString Project::m_LircdConfPath = "etc/lirc/lircd.conf";
 const QString Project::ImagesDirectory = QString("/Images");
 QMap<QString, Lirc *> Project::m_lircConfiges;
 QMap<QString, Device*> Project::m_devices;
+
+Project* Project::m_instance = 0;
 
 Project::Project()
 {
@@ -85,6 +90,7 @@ void Project::generateDeviceFile(Device *device)
 void Project::AddDevice(Device *device)
 {
     m_devices.insert(device->GetName(), device);
+    emit DevicesUpdated(Project::GetDevices());
 }
 
 
@@ -94,6 +100,11 @@ QStringList Project::GetDevices()
         return QStringList();
 
     return QStringList(m_devices.keys());
+}
+
+Device *Project::GetDevice(QString deviceName)
+{
+    return m_devices[deviceName];
 }
 
 QStringList Project::GetDeviceCommands(QString deviceName)
@@ -107,5 +118,62 @@ void Project::GenerateDevicesFile()
 {
     foreach (Device *device, m_devices) {
         generateDeviceFile(device);
+    }
+}
+
+
+Project *Project::Instance()
+{
+    static QMutex mutex;
+    if (!m_instance)
+    {
+        mutex.lock();
+        if (!m_instance)
+            m_instance = new Project;
+        mutex.unlock();
+    }
+    return m_instance;
+}
+
+bool Project::ParseDevice(QString rawData)
+{
+    if (!rawData.startsWith("protocol"))
+        return false;
+
+    QRegExp rawType("protocol (\\w+): (\\w+)");
+    rawType.indexIn(rawData, 0);
+    Device *parsedDevice;
+    QString type = rawType.cap(2);
+    QString name = rawType.cap(1);
+    if (type.compare("com") == 0)
+    {
+        QRegExp rawPort("port: (0|1)");
+        rawPort.indexIn(rawData, 0);
+        QString port = rawPort.cap(1);
+
+        QRegExp rawSpeed("speed: (\\d+)");
+        rawSpeed.indexIn(rawData, 0);
+        QString speed = rawSpeed.cap(1);
+
+        QRegExp rawcharacterSize("character-size: (\\d+)");
+        rawcharacterSize.indexIn(rawData, 0);
+        QString characterSize = rawcharacterSize.cap(1);
+
+        QRegExp rawParity("parity: (none|.+\r\n)");
+        rawParity.indexIn(rawData, 0);
+        QString parity = rawParity.cap(1);
+
+        parsedDevice = new ComDevice(name, port, speed, parity, characterSize);
+
+        int i = 0;
+        QRegExp rawMethod("command (\\w+)\n\\{\n\\s+send \\w+ \\(([^\n]+)\\)");
+        while ((i = rawMethod.indexIn(rawData, i)) > 0)
+        {
+            i += rawMethod.matchedLength();
+
+            parsedDevice->addCommand(rawMethod.cap(1), rawMethod.cap(2));
+        }
+
+        this->AddDevice(parsedDevice);
     }
 }
