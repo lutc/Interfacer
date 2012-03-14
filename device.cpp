@@ -15,3 +15,13 @@ QStringList Device::GetCommands()
 {
     return QStringList(m_commands.keys());
 }
+
+void Device::addCommand(QString commandName, QString command)
+{
+    QString commandBody = QString("command %0\n" \
+            "{\n" \
+            "   send %1 (%2)\n" \
+            "}\n\n").arg(commandName).arg(m_name).arg(command);
+    m_commands.insert(commandName, commandBody);
+}
+

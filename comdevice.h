@@ -9,8 +9,7 @@ class ComDevice : public Device
 public:
     ComDevice(QString deviceName, QString port, QString speed, QString parity, QString characterSize = "8");
     QString Save();
-    void Init();
-    void addCommand(QString, QString);
+    void Init();    
 
 private:
     QString m_port;

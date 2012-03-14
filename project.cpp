@@ -2,6 +2,7 @@
 #include "project.h"
 #include "parser.h"
 #include <QDebug>
+#include "pjlinkdevice.h"
 
 #include "comdevice.h"
 
@@ -9,6 +10,7 @@ QString Project::PathToProject = "/home/lutc/MECS/projects/petrogradsk.adm/rootf
 const QString Project::m_LircdConfPath = "etc/lirc/lircd.conf";
 
 const QString Project::ImagesDirectory = QString("/Images");
+const QString Project::ControllerDirectory = QString("/controller");
 QMap<QString, Lirc *> Project::m_lircConfiges;
 QMap<QString, Device*> Project::m_devices;
 
@@ -176,4 +178,26 @@ bool Project::ParseDevice(QString rawData)
 
         this->AddDevice(parsedDevice);
     }
+    else if (type.compare("tcp") == 0)
+    {
+        QRegExp rawTargetIp("target-ip: \"([\\d|\\.]+)\\:(\\d+)");
+        rawTargetIp.indexIn(rawData, 0);
+
+        QString targetIp = rawTargetIp.cap(1);
+        QString targetPort = rawTargetIp.cap(2);
+
+        parsedDevice = new PJLinkDevice(name, targetIp, targetPort);
+
+        int i = 0;
+        QRegExp rawMethod("command (\\w+)\n\\{\n\\s+send \\w+ \\(([^\n]+)\\)");
+        while ((i = rawMethod.indexIn(rawData, i)) > 0)
+        {
+            i += rawMethod.matchedLength();
+
+            parsedDevice->addCommand(rawMethod.cap(1), rawMethod.cap(2));
+        }
+
+        this->AddDevice(parsedDevice);
+    }
+    return true;
 }

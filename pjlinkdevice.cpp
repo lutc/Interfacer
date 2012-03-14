@@ -1,9 +1,14 @@
 #include "pjlinkdevice.h"
 
-PJLinkDevice::PJLinkDevice(QString deviceName, QString ip) :
+const QString PJLinkDevice::DEFAULT_PORT = "4352";
+
+PJLinkDevice::PJLinkDevice(QString deviceName, QString ip, QString port) :
     Device(deviceName)
 {
     m_ip = ip;
+    m_caseSensitive = "false";
+    if (port.isEmpty())
+        m_port = DEFAULT_PORT;
     addCommand("poweron", "\"%1POWR 1\" cr");
     addCommand("poweroff", "\"%1POWR 0\" cr");
     addCommand("muteon", "\"%1AVMT 31\" cr");
@@ -17,18 +22,11 @@ QString PJLinkDevice::Save()
                              "query-period: %3\n" \
                              "timeout: %4\n" \
                              "case-sensitive: %5\n" \
-                   "\n\n").arg(m_name).arg(m_ip).arg(DEFAULT_PORT).arg(m_queryPeriod).arg(m_timeout).arg(m_caseSensitive);
+                   "\n\n").arg(m_name).arg(m_ip).arg(m_port).arg(m_queryPeriod).arg(m_timeout).arg(m_caseSensitive);
     foreach (QString commands, m_commands) {
         result += commands;
     }
     return result;
 }
 
-void PJLinkDevice::addCommand(QString commandName, QString command)
-{
-    QString("command %0\n" \
-            "{\n" \
-            "   send %1 (%2)\n" \
-            "}\n\n").arg(commandName).arg(m_name).arg(command);
-    m_commands.insert(commandName, command);
-}
+

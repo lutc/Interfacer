@@ -6,18 +6,19 @@
 class PJLinkDevice : public Device
 {
     Q_OBJECT
-public:
-    explicit PJLinkDevice(QString deviceName, QString ip);
-    QString Save();
-    void addCommand(QString name, QString command);
+public:    
+
+    explicit PJLinkDevice(QString deviceName, QString ip, QString port = "");
+    QString Save();    
     
 signals:
     
 public slots:
 
 private:
-    const static int DEFAULT_PORT = 4352;
+    const static QString DEFAULT_PORT;
     QString m_ip;
+    QString m_port;
     QString m_caseSensitive;
     
 };

@@ -85,11 +85,17 @@ void AddEditDeviceDialog::accept()
         case (AddEditDeviceDialog::Com):
             m_device = new ComDevice(ui->txtName->text(), ui->cmbPort->currentText(), ui->cmbSpeed->currentText(), ui->cmbParity->currentText() );
             break;
-        default:
+
+        defaul:
+
             QString separatorIp(".");
             QString ip = ui->spnIp0->text().append(separatorIp).append(ui->spnIp1->text()).append(separatorIp).
                     append(ui->spnIp2->text()).append(separatorIp).append(ui->spnIp3->text());
-            m_device = new PJLinkDevice(ui->txtName->text(), ip);
+            if (ui->cmbType->currentIndex() == AddEditDeviceDialog::PJLink)
+                m_device = new PJLinkDevice(ui->txtName->text(), ip);
+            else
+                m_device = new PJLinkDevice(ui->txtName->text(), ip, ui->spnPortTcp->text());
+
             break;
         }
     }

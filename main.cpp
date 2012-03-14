@@ -46,6 +46,19 @@
 #include <QTextStream>
 #include "project.h"
 
+void ParseFile(QString filename)
+{
+    QFile file(filename);
+
+    file.open(QIODevice::ReadOnly | QIODevice::Text);
+    QTextStream inStream(&file);
+    inStream.setCodec("Windows-1251");
+    QString rawData = inStream.readAll();
+    file.close();
+
+    Project::Instance()->ParseDevice(rawData);
+}
+
 int main(int argc, char **argv)
 {
     Q_INIT_RESOURCE(images);
@@ -53,15 +66,12 @@ int main(int argc, char **argv)
     QApplication app(argc, argv);
     app.setAttribute(Qt::AA_DontCreateNativeWidgetSiblings);
 
-    QFile file("/home/lutc/MECS/projects/petrogradsk.adm/rootfs/controller/kramer.rs232");
-//    QFile file("/home/lutc/MECS/projects/petrogradsk.adm/rootfs/controller/christie.pjlink");
-    file.open(QIODevice::ReadOnly | QIODevice::Text);
-    QTextStream inStream(&file);
-    inStream.setCodec("Windows-1251");
-    QString rawData = inStream.readAll();
-
-    Project::Instance()->ParseDevice(rawData);
-
+    QString path = "/home/lutc/MECS/projects/petrogradsk.adm/rootfs/controller/";
+    ParseFile(path + "kramer.rs232");
+    ParseFile(path + "mitsubishileft.pjlink");
+    ParseFile(path + "mitsubishiright.pjlink");
+    ParseFile(path + "christie.pjlink");
+    ParseFile(path + "extron.rs232");
 
     MainWindow window;
     window.showMaximized();

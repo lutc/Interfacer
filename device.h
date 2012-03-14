@@ -17,7 +17,7 @@ public:
     QString GetName(){return m_name;}
     QString GetFileName(){return (m_name + m_deviceName).toLower();}
     void SetDeviceName(QString deviceName){m_deviceName = deviceName;}
-    virtual void addCommand(QString name, QString command = "") = 0;
+    virtual void addCommand(QString name, QString command = "");
 
 signals:
 

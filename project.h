@@ -19,6 +19,7 @@ public:
 
     static QString PathToProject;
     static const QString ImagesDirectory;
+    static const QString ControllerDirectory;
     static QString LircdConfPath(){return PathToProject + m_LircdConfPath;}
 
     static QStringList GetImages();
