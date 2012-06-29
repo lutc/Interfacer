@@ -70,6 +70,10 @@ View::View(QWidget *parent)
     m_btnAddTogleButton->setText("Add TogleButton");
     m_btnAddText = new QToolButton;
     m_btnAddText->setText("Add Text");
+
+    m_btnAddIndicator = new QToolButton;
+    m_btnAddIndicator->setText("Add Indicator");
+
     m_btnAddPage = new QToolButton;
     m_btnAddPage->setText("Add page");
     m_btnAddDevice = new QToolButton;
@@ -87,11 +91,13 @@ View::View(QWidget *parent)
     m_btnAddMethod = new QToolButton;
     m_btnAddMethod->setText("+");
     m_btnAddMethod->setEnabled(!m_cmbDevices->currentText().isEmpty());
+    m_btnAddMethod->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Space));
     connect(m_btnAddMethod, SIGNAL(clicked()), this, SLOT(AddMethod()));
 
     labelLayout->addWidget(m_btnAddButton);
     labelLayout->addWidget(m_btnAddTogleButton);
     labelLayout->addWidget(m_btnAddText);
+    labelLayout->addWidget(m_btnAddIndicator);
     labelLayout->addSpacing(15);
     labelLayout->addWidget(m_btnAddPage);
     labelLayout->addWidget(m_btnAddDevice);
@@ -119,7 +125,7 @@ View::View(QWidget *parent)
     connect(m_btnAddPage, SIGNAL(clicked()), this, SLOT(AddPage()));
     connect(m_btnSave, SIGNAL(clicked()), ItemManager::Instance(), SLOT(GenerateInterface()));
     connect(m_btnLoad, SIGNAL(clicked()), ItemManager::Instance(), SLOT(LoadFromFile()));
-    connect(m_btnAddDevice, SIGNAL(clicked()), this, SLOT(AddDevice()));
+    connect(m_btnAddDevice, SIGNAL(clicked()), this, SLOT(AddDevice()));    
 }
 
 
@@ -218,4 +224,14 @@ void View::AddMethod()
         Device *dev = Project::GetDevice(m_cmbDevices->currentText());
         dev->addCommand(dlg->CommandName(), dlg->Command());
     }
+}
+
+void View::AddPageEx(Page*)
+{
+
+}
+
+void View::AddItemEx(QGraphicsItem *)
+{
+
 }

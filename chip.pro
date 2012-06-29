@@ -18,7 +18,8 @@ HEADERS += mainwindow.h view.h \
     addeditdevicedialog.h \
     comdevice.h \
     pjlinkdevice.h \
-    addmethoddialog.h
+    addmethoddialog.h \
+    indicatormecs.h
 SOURCES += main.cpp \
     itemmanager.cpp \
     project.cpp \
@@ -37,7 +38,8 @@ SOURCES += main.cpp \
     addeditdevicedialog.cpp \
     comdevice.cpp \
     pjlinkdevice.cpp \
-    addmethoddialog.cpp
+    addmethoddialog.cpp \
+    indicatormesc.cpp
 SOURCES += mainwindow.cpp view.cpp
 
 contains(QT_CONFIG, opengl):QT += opengl

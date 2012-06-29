@@ -86,7 +86,7 @@ void AddEditDeviceDialog::accept()
             m_device = new ComDevice(ui->txtName->text(), ui->cmbPort->currentText(), ui->cmbSpeed->currentText(), ui->cmbParity->currentText() );
             break;
 
-        defaul:
+        default:
 
             QString separatorIp(".");
             QString ip = ui->spnIp0->text().append(separatorIp).append(ui->spnIp1->text()).append(separatorIp).
@@ -99,7 +99,7 @@ void AddEditDeviceDialog::accept()
             break;
         }
     }
-    m_device->SetDeviceName(ui->txtDeviceName->text());
+    m_device->SetProtocolName(ui->txtDeviceName->text());
 
     //TODO: Add device editing
     if (m_device != NULL)

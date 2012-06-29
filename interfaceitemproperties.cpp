@@ -56,8 +56,7 @@ InterfaceItemProperties::InterfaceItemProperties(CommonItemMECS &item) :
     chkSaveAsDefault->setChecked(isDefault);
     bottomLayout->addWidget(chkSaveAsDefault);
     bottomLayout->addStretch();
-    bottomLayout->addWidget(buttonBox);
-
+    bottomLayout->addWidget(buttonBox);    
     mainLayout->addLayout(bottomLayout, 6, 0, 1, 2);
     setLayout(mainLayout);
 

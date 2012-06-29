@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>392</width>
-    <height>519</height>
+    <width>427</width>
+    <height>552</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -95,7 +95,7 @@
    <item row="2" column="0">
     <widget class="QLabel" name="lblDeviceName">
      <property name="text">
-      <string>DeviceName</string>
+      <string>Protocol Name</string>
      </property>
     </widget>
    </item>

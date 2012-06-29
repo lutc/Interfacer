@@ -3,10 +3,13 @@
 #include "parser.h"
 #include <QDebug>
 #include "pjlinkdevice.h"
+#include "itemmanager.h"
 
 #include "comdevice.h"
+#include "textmesc.h"
+#include "buttonmecs.h"
 
-QString Project::PathToProject = "/home/lutc/MECS/projects/petrogradsk.adm/rootfs/";
+QString Project::PathToProject;
 const QString Project::m_LircdConfPath = "etc/lirc/lircd.conf";
 
 const QString Project::ImagesDirectory = QString("/Images");
@@ -80,8 +83,8 @@ void Project::updateLircConfiges()
 }
 
 void Project::generateDeviceFile(Device *device)
-{
-    QFile file(device->GetFileName());
+{    
+    QFile file(Project::PathToDevices()  + device->GetFileName());
     file.open(QIODevice::WriteOnly | QIODevice::Text);
     QTextStream out(&file);
 //    out.setCodec("Windows-1251");
@@ -137,8 +140,276 @@ Project *Project::Instance()
     return m_instance;
 }
 
-bool Project::ParseDevice(QString rawData)
+bool Project::ParseInterface()
 {
+    QString rawData = readFile(Project::PathToProject + "/interface");
+
+    int i = 0;
+
+
+    QRegExp rawType("\\[(\\w+)\\]");
+
+    while ((i = rawType.indexIn(rawData, i)) >= 0)
+    {
+        i += rawType.matchedLength();
+        QString type = rawType.cap(1);
+
+        if (type.compare("Page") == 0)
+        {
+            QRegExp rawName("Name = (\\w+)");
+            rawName.indexIn(rawData, i);
+            QString name= rawName.cap(1);
+
+
+            QRegExp rawBackground("Background = (\\w+.)/(\\w+)\\.(\\w+)");
+            rawBackground.indexIn(rawData, i);
+            QString background= rawBackground.cap(1) + "/" + rawBackground.cap(2) + "." + rawBackground.cap(3);
+
+            qDebug() << name;
+            ItemManager::Instance()->AddItem(new Page(name, background));
+
+        }
+        else if (type.compare("Text") == 0)
+        {
+            /*
+[Text]
+Align = left
+Pages = Extron
+Left = 250
+Top = 25
+Font = Images/arial.ttf
+FontSize = 20
+Color = white
+Width = 200
+Height = 50
+DefaultText = Extron
+              */
+            QRegExp rawAlign("Align = (\\w+)");
+            rawAlign.indexIn(rawData, i);
+            QString Align= rawAlign.cap(1);
+
+            QRegExp rawPages("Pages = (\\w+)");
+            rawPages.indexIn(rawData, i);
+            QString Pages= rawPages.cap(1);
+
+            QRegExp rawLeft("Left = (\\d+)");
+            rawLeft.indexIn(rawData, i);
+            QString Left= rawLeft.cap(1);
+
+            QRegExp rawTop("Top = (\\d+)");
+            rawTop.indexIn(rawData, i);
+            QString Top= rawTop.cap(1);
+
+            QRegExp rawFontSize("FontSize = (\\d+)");
+            rawFontSize.indexIn(rawData, i);
+            QString FontSize= rawFontSize.cap(1);
+
+            QRegExp rawWidth("Width = (\\d+)");
+            rawWidth.indexIn(rawData, i);
+            QString Width= rawWidth.cap(1);
+
+            QRegExp rawHeight("Height = (\\d+)");
+            rawHeight.indexIn(rawData, i);
+            QString Height= rawHeight.cap(1);
+
+            QRegExp rawFont("Font = (\\w+)/(\\w+)\\.(\\w+)");
+            rawFont.indexIn(rawData, i);
+            QString Font= rawFont.cap(1) + "/" + rawFont.cap(2) + "." + rawFont.cap(3);
+
+            QRegExp rawColor("Color = (\\w+)");
+            rawColor.indexIn(rawData, i);
+            QString Color= rawColor.cap(1);
+
+            QRegExp rawDefaultText("DefaultText = (\\w+)");
+            rawDefaultText.indexIn(rawData, i);
+            QString DefaultText= rawDefaultText.cap(1);
+
+            TextMESC *text = new TextMESC(Left.toInt(), Top.toInt());
+            text->setWidth(Width.toInt());
+            text->setHeight(Height.toInt());
+            text->setText(DefaultText);
+            ItemManager::Instance()->AddItem(text);
+        }
+        else if (type.compare("Button") == 0)
+        {
+
+//            [Button]
+//            Caption = Включить
+//            Pages = Projectors
+//            Left = 25
+//            Top = 150
+//            Font = Images/arial.ttf
+//            FontSize = 20
+//            Color = white
+//            UpImage = Images/menu_btn.png
+//            DownImage = Images/menu_light_btn.png
+//            HeldImage = Images/menu_light_btn.png
+//            OnClick  = Command Mitsubishil poweron
+
+            QRegExp rawUpImage("UpImage = (\\w+.)/(\\w+)\\.(\\w+)");
+            rawUpImage.indexIn(rawData, i);
+            QString UpImage= rawUpImage.cap(1) + "/" + rawUpImage.cap(2) + "." + rawUpImage.cap(3);
+
+
+            QRegExp rawDownImage("DownImage = (\\w+.)/(\\w+)\\.(\\w+)");
+            rawDownImage.indexIn(rawData, i);
+            QString DownImage= rawDownImage.cap(1) + "/" + rawDownImage.cap(2) + "." + rawDownImage.cap(3);
+
+            QRegExp rawHeldImage("HeldImage = (\\w+.)/(\\w+)\\.(\\w+)");
+            rawHeldImage.indexIn(rawData, i);
+            QString HeldImage= rawHeldImage.cap(1) + "/" + rawHeldImage.cap(2) + "." + rawHeldImage.cap(3);
+
+            QRegExp rawOnClick("OnClick(\\s*)= (\\w+.) (\\w+) (\\w+)");
+            rawOnClick.indexIn(rawData, i);
+            QString commandType = rawOnClick.cap(1);
+            QString target = rawOnClick.cap(2);
+            QString command = rawOnClick.cap(3);
+            qDebug() << rawOnClick.capturedTexts();
+
+            QRegExp rawLeft("Left = (\\d+)");
+            rawLeft.indexIn(rawData, i);
+            QString Left= rawLeft.cap(1);
+
+            QRegExp rawTop("Top = (\\d+)");
+            rawTop.indexIn(rawData, i);
+            QString Top= rawTop.cap(1);
+
+            QRegExp rawCaption("Caption = (\\w+)");
+            rawCaption.indexIn(rawData, i);
+            QString Caption= rawCaption.cap(1);
+
+            QRegExp rawPages("Pages = (\\w+)");
+            rawPages.indexIn(rawData, i);
+            QString Pages= rawPages.cap(1);
+
+            QRegExp rawFont("Font = (\\w+)/(\\w+)\\.(\\w+)");
+            rawFont.indexIn(rawData, i);
+            QString Font= rawFont.cap(1) + "/" + rawFont.cap(2) + "." + rawFont.cap(3);
+
+
+            QRegExp rawColor("Color = (\\w+)");
+            rawColor.indexIn(rawData, i);
+            QString Color= rawColor.cap(1);
+
+            QRegExp rawFontSize("FontSize = (\\d+)");
+            rawFontSize.indexIn(rawData, i);
+            QString FontSize= rawFontSize.cap(1);
+
+            ButtonMECS *button = new ButtonMECS(Left.toInt(), Top.toInt());
+
+        }
+        else if (type.compare("ToggleButton") == 0)
+        {
+
+//            [ToggleButton]
+//            Caption = MuteL
+//            Pages = Main
+//            Left = 25
+//            Top = 400
+//            Font = Images/arial.ttf
+//            FontSize = 20
+//            Color = white
+//            UpImage = Images/menu_btn.png
+//            DownImage = Images/menu_light_btn.png
+//            HeldImage = Images/menu_light_btn.png
+
+
+//            OnDown = Command Mitsubishil muteon
+//            OnUp = Command Mitsubishil muteoff
+
+            QRegExp rawUpImage("UpImage = (\\w+.)/(\\w+)\\.(\\w+)");
+            rawUpImage.indexIn(rawData, i);
+            QString UpImage= rawUpImage.cap(1) + "/" + rawUpImage.cap(2) + "." + rawUpImage.cap(3);
+
+
+            QRegExp rawDownImage("DownImage = (\\w+.)/(\\w+)\\.(\\w+)");
+            rawDownImage.indexIn(rawData, i);
+            QString DownImage= rawDownImage.cap(1) + "/" + rawDownImage.cap(2) + "." + rawDownImage.cap(3);
+
+            QRegExp rawHeldImage("HeldImage = (\\w+.)/(\\w+)\\.(\\w+)");
+            rawHeldImage.indexIn(rawData, i);
+            QString HeldImage= rawHeldImage.cap(1) + "/" + rawHeldImage.cap(2) + "." + rawHeldImage.cap(3);
+
+            QRegExp rawOnDown("OnDown(\\s*)= (\\w+.) (\\w+) (\\w+)");
+            rawOnDown.indexIn(rawData, i);
+            QString commandTypeDown = rawOnDown.cap(1);
+            QString targetDown = rawOnDown.cap(2);
+            QString commandDown = rawOnDown.cap(3);
+            qDebug() << rawOnDown.capturedTexts();
+
+            QRegExp rawOnUp("OnUp(\\s*)= (\\w+.) (\\w+) (\\w+)");
+            rawOnUp.indexIn(rawData, i);
+            QString commandTypeUp = rawOnUp.cap(1);
+            QString targetUp = rawOnUp.cap(2);
+            QString commandUp = rawOnUp.cap(3);
+            qDebug() << rawOnUp.capturedTexts();
+
+            QRegExp rawLeft("Left = (\\d+)");
+            rawLeft.indexIn(rawData, i);
+            QString Left= rawLeft.cap(1);
+
+            QRegExp rawTop("Top = (\\d+)");
+            rawTop.indexIn(rawData, i);
+            QString Top= rawTop.cap(1);
+
+            QRegExp rawCaption("Caption = (\\w+)");
+            rawCaption.indexIn(rawData, i);
+            QString Caption= rawCaption.cap(1);
+
+            QRegExp rawPages("Pages = (\\w+)");
+            rawPages.indexIn(rawData, i);
+            QString Pages= rawPages.cap(1);
+
+            QRegExp rawFont("Font = (\\w+)/(\\w+)\\.(\\w+)");
+            rawFont.indexIn(rawData, i);
+            QString Font= rawFont.cap(1) + "/" + rawFont.cap(2) + "." + rawFont.cap(3);
+
+
+            QRegExp rawColor("Color = (\\w+)");
+            rawColor.indexIn(rawData, i);
+            QString Color= rawColor.cap(1);
+
+            QRegExp rawFontSize("FontSize = (\\d+)");
+            rawFontSize.indexIn(rawData, i);
+            QString FontSize= rawFontSize.cap(1);
+        }
+    }
+
+
+    return true;
+}
+
+void Project::ParseAllDevicesFromProjectRoot()
+{
+    QDir dir(Project::PathToProject + "controller/");
+    QStringList filter;
+    filter  << "*.pjlink" << "*.rj45" << "*.rs232" << "*.lirc";
+    QFileInfoList dirContent = dir.entryInfoList(filter, QDir::Files | QDir::NoDotAndDotDot);
+
+
+    foreach (QFileInfo info, dirContent)
+    {
+        Project::Instance()->ParseDevice(info.filePath());
+    }
+}
+
+QString Project::readFile(QString filename)
+{
+    QFile file(filename);
+
+    file.open(QIODevice::ReadOnly | QIODevice::Text);
+    QTextStream inStream(&file);
+    inStream.setCodec("Windows-1251");
+    QString rawData = inStream.readAll();
+    file.close();
+    return rawData;
+}
+
+bool Project::ParseDevice(QString filename)
+{
+
+    QString rawData = readFile(filename);
+    QFileInfo info(filename);
     if (!rawData.startsWith("protocol"))
         return false;
 
@@ -147,7 +418,8 @@ bool Project::ParseDevice(QString rawData)
     Device *parsedDevice;
     QString type = rawType.cap(2);
     QString name = rawType.cap(1);
-    if (type.compare("com") == 0)
+
+    if ((type.compare("com") == 0) || (type.compare("usb") == 0))
     {
         QRegExp rawPort("port: (0|1)");
         rawPort.indexIn(rawData, 0);
@@ -174,9 +446,7 @@ bool Project::ParseDevice(QString rawData)
             i += rawMethod.matchedLength();
 
             parsedDevice->addCommand(rawMethod.cap(1), rawMethod.cap(2));
-        }
-
-        this->AddDevice(parsedDevice);
+        }        
     }
     else if (type.compare("tcp") == 0)
     {
@@ -197,7 +467,8 @@ bool Project::ParseDevice(QString rawData)
             parsedDevice->addCommand(rawMethod.cap(1), rawMethod.cap(2));
         }
 
-        this->AddDevice(parsedDevice);
     }
+    parsedDevice->SetProtocolName(info.completeSuffix());
+    this->AddDevice(parsedDevice);
     return true;
 }

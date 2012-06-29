@@ -12,12 +12,12 @@ class Page : public QGraphicsScene
 public:
 
     Page();
+    Page(QString Name, QString Background);
     QString GetName();
     void SetName(QString);
     void SetBackground(QString);
     QString GetBackground() {return m_background;}
     QString Save();
-    void Parse(QString from);
 protected:
     void drawBackground(QPainter *painter, const QRectF &);
 

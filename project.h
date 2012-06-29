@@ -18,6 +18,7 @@ public:
     static Project *Instance();
 
     static QString PathToProject;
+    static QString PathToDevices() {return Project::PathToProject + "controller/"; }
     static const QString ImagesDirectory;
     static const QString ControllerDirectory;
     static QString LircdConfPath(){return PathToProject + m_LircdConfPath;}
@@ -34,7 +35,9 @@ public:
     static QStringList GetDeviceCommands(QString deviceName);
     static void GenerateDevicesFile();
 
-    bool ParseDevice(QString rawData);
+    void ParseAllDevicesFromProjectRoot();
+    bool ParseDevice(QString filename);
+    bool ParseInterface();
 
 
 private:
@@ -43,6 +46,7 @@ private:
     static QMap<QString, Device*> m_devices;
     static void updateLircConfiges();
     static void generateDeviceFile(Device *device);
+    QString readFile(QString filename);
 
 
     Project();

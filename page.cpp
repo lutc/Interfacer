@@ -9,6 +9,7 @@
 
 #include <QDebug>
 #include <QMetaProperty>
+
 Page::Page():
     m_name("Main")
 {
@@ -19,6 +20,14 @@ Page::Page():
         addLine(i, 0, i, sceneHeight);
     for (int i = CommonItemMECS::stepOfGrid; i < sceneHeight; i += CommonItemMECS::stepOfGrid)
         addLine(0, i, sceneWidth, i);
+}
+
+Page::Page(QString Name, QString Background)
+{
+    Page();
+
+    SetName(Name);
+    SetBackground(Background);
 }
 
 void Page::drawBackground(QPainter *painter, const QRectF &)
@@ -44,14 +53,12 @@ QString Page::GetName()
 }
 void Page::SetName(QString newName)
 {
-    qDebug() << newName;
     m_name = newName;
     emit selectionChanged();
 //    emit nameChanged();
 }
 void Page::SetBackground(QString path)
 {
-    qDebug() << path;
     m_background = path;
     QString backgroundImagePath =
             Project::PathToProject + Project::ImagesDirectory
@@ -65,15 +72,4 @@ QString Page::Save()
             "Name = %0\n" \
                    "Background = Images/%1\n\n").arg(GetName()).arg(m_background);
 
-}
-
-void Page::Parse(QString from)
-{
-    QStringList list = from.split("\n", QString::SkipEmptyParts);
-    list.removeFirst(); // remove element with "type"
-    foreach (QString property, list){
-        QStringList propertylist = property.split("=");
-        this->setProperty(propertylist.at(0).trimmed().toAscii(),
-                                     propertylist.at(1).trimmed());
-    }
 }

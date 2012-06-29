@@ -40,7 +40,7 @@ QString TextMESC::Save()
 {
     return QString (
         "[Text]\n"\
-        "Align = left\n") +
+        "Align = center\n") +
             CommonItemMECS::Save() +
         QString ("Width = %2\n" \
         "Height = %3\n" \
