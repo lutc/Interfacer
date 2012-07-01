@@ -35,3 +35,8 @@ QString ToggleButtonMECS::Save()
         QString("OnDown = %0\n" \
             "OnUp = %1\n\n").arg(m_onDownActionString).arg(m_onUpActionString);
 }
+
+void ToggleButtonMECS::SetOnUpAction(QString commandType, QString target, QString command)
+{
+
+}

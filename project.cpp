@@ -8,6 +8,7 @@
 #include "comdevice.h"
 #include "textmesc.h"
 #include "buttonmecs.h"
+#include "togglebuttonmecs.h"
 
 QString Project::PathToProject;
 const QString Project::m_LircdConfPath = "etc/lirc/lircd.conf";
@@ -165,7 +166,6 @@ bool Project::ParseInterface()
             rawBackground.indexIn(rawData, i);
             QString background= rawBackground.cap(1) + "/" + rawBackground.cap(2) + "." + rawBackground.cap(3);
 
-            qDebug() << name;
             ItemManager::Instance()->AddItem(new Page(name, background));
 
         }
@@ -228,6 +228,7 @@ DefaultText = Extron
             text->setWidth(Width.toInt());
             text->setHeight(Height.toInt());
             text->setText(DefaultText);
+            text->setPage(Pages);
             ItemManager::Instance()->AddItem(text);
         }
         else if (type.compare("Button") == 0)
@@ -261,10 +262,9 @@ DefaultText = Extron
 
             QRegExp rawOnClick("OnClick(\\s*)= (\\w+.) (\\w+) (\\w+)");
             rawOnClick.indexIn(rawData, i);
-            QString commandType = rawOnClick.cap(1);
-            QString target = rawOnClick.cap(2);
-            QString command = rawOnClick.cap(3);
-            qDebug() << rawOnClick.capturedTexts();
+            QString commandType = rawOnClick.cap(2);
+            QString target = rawOnClick.cap(3);
+            QString command = rawOnClick.cap(4);
 
             QRegExp rawLeft("Left = (\\d+)");
             rawLeft.indexIn(rawData, i);
@@ -296,6 +296,13 @@ DefaultText = Extron
             QString FontSize= rawFontSize.cap(1);
 
             ButtonMECS *button = new ButtonMECS(Left.toInt(), Top.toInt());
+            button->setText(Caption);
+            button->setBackgroundImage(UpImage);
+            button->SetDownImage(DownImage);
+            button->SetHeldImage(HeldImage);
+            button->SetOnClickAction(commandType, target, command);
+            button->setPage(Pages);
+            ItemManager::Instance()->AddItem(button);
 
         }
         else if (type.compare("ToggleButton") == 0)
@@ -332,17 +339,15 @@ DefaultText = Extron
 
             QRegExp rawOnDown("OnDown(\\s*)= (\\w+.) (\\w+) (\\w+)");
             rawOnDown.indexIn(rawData, i);
-            QString commandTypeDown = rawOnDown.cap(1);
-            QString targetDown = rawOnDown.cap(2);
-            QString commandDown = rawOnDown.cap(3);
-            qDebug() << rawOnDown.capturedTexts();
+            QString commandTypeDown = rawOnDown.cap(2);
+            QString targetDown = rawOnDown.cap(3);
+            QString commandDown = rawOnDown.cap(4);
 
             QRegExp rawOnUp("OnUp(\\s*)= (\\w+.) (\\w+) (\\w+)");
             rawOnUp.indexIn(rawData, i);
-            QString commandTypeUp = rawOnUp.cap(1);
-            QString targetUp = rawOnUp.cap(2);
-            QString commandUp = rawOnUp.cap(3);
-            qDebug() << rawOnUp.capturedTexts();
+            QString commandTypeUp = rawOnUp.cap(2);
+            QString targetUp = rawOnUp.cap(3);
+            QString commandUp = rawOnUp.cap(4);
 
             QRegExp rawLeft("Left = (\\d+)");
             rawLeft.indexIn(rawData, i);
@@ -372,9 +377,17 @@ DefaultText = Extron
             QRegExp rawFontSize("FontSize = (\\d+)");
             rawFontSize.indexIn(rawData, i);
             QString FontSize= rawFontSize.cap(1);
+
+            ToggleButtonMECS *button = new ToggleButtonMECS(Left.toInt(), Top.toInt());
+            button->setText(Caption);
+            button->setBackgroundImage(UpImage);
+            button->SetDownImage(DownImage);
+            button->SetHeldImage(HeldImage);
+//            button->Set(commandType, target, command);
+            button->setPage(Pages);
+            ItemManager::Instance()->AddItem(button);
         }
     }
-
 
     return true;
 }

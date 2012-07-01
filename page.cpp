@@ -9,9 +9,17 @@
 
 #include <QDebug>
 #include <QMetaProperty>
+#ifndef QT_NO_OPENGL
+#include <QtOpenGL>
+#endif
 
 Page::Page():
     m_name("Main")
+{    
+    Refresh();
+}
+
+void Page::Refresh()
 {
     int sceneHeight = 650;
     int sceneWidth = 1200;
@@ -24,10 +32,25 @@ Page::Page():
 
 Page::Page(QString Name, QString Background)
 {
-    Page();
+    Refresh();
 
     SetName(Name);
     SetBackground(Background);
+}
+
+QGraphicsView *Page::GenerateGraphicsView()
+{
+    QGraphicsView *graphicsView = new QGraphicsView();
+
+    graphicsView->setRenderHint(QPainter::Antialiasing, false);
+    graphicsView->setDragMode(QGraphicsView::RubberBandDrag);
+    graphicsView->setOptimizationFlags(QGraphicsView::DontSavePainterState);
+    graphicsView->setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);
+    #ifndef QT_NO_OPENGL
+    graphicsView->setViewport(new QGLWidget(QGLFormat(QGL::SampleBuffers)));
+    #endif
+    graphicsView->setRenderHint(QPainter::Antialiasing, true);
+    return graphicsView;
 }
 
 void Page::drawBackground(QPainter *painter, const QRectF &)
@@ -47,6 +70,11 @@ void Page::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
     properties->show();
 }
 
+void Page::UpdateBackground()
+{
+    SetBackground(m_background);
+}
+
 QString Page::GetName()
 {
     return m_name;
@@ -61,8 +89,7 @@ void Page::SetBackground(QString path)
 {
     m_background = path;
     QString backgroundImagePath =
-            Project::PathToProject + Project::ImagesDirectory
-            + QString("/") + m_background;
+            Project::PathToProject + m_background;
     m_backgroundImage = new QImage(backgroundImagePath);
 }
 

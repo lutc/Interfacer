@@ -55,6 +55,8 @@ public:
 
     CommonItemMECS(int x, int y);
 
+    void UpdatePosition();
+
     QRectF boundingRect() const;
     QPainterPath shape() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *item, QWidget *widget);
@@ -64,11 +66,13 @@ public:
     void setHeight(qreal );
     void setText(QString );
     void setBackgroundImage(QString );
+    void setPage(QString);
 
     qreal getWidth( );
     qreal getHeight( );
     QString getText( );
     QString getBackgroundImage( );
+    QString getPage();
     bool isRemoved();
     bool isInitialized(){return m_init;}
     void setInitialized(){m_init = true;}
@@ -107,6 +111,7 @@ private:
 
     bool m_removed;
     bool m_init;
+    QString m_page;
 };
 
 #endif

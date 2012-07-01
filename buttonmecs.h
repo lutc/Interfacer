@@ -18,6 +18,12 @@ public:
     virtual QGridLayout *GetPropertiesWidgets();
     void AcceptWidgetsProperties();
 
+    void SetDownImage(QString image);
+
+    void SetHeldImage(QString image);
+
+    void SetOnClickAction(QString commandType, QString target, QString command);
+
     virtual QString Save();
 
 protected:

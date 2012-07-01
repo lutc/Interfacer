@@ -1,6 +1,6 @@
 #include "buttonmecs.h"
 #include <QLabel>
-
+#include <QDebug>
 #include "project.h"
 
 ButtonMECS::ButtonMECS(int x, int y, bool enableAction):
@@ -38,7 +38,7 @@ QGridLayout *ButtonMECS::GetPropertiesWidgets()
     m_cmbUpImage->addItem("");
     m_cmbUpImage->addItems(Project::GetImages());
     if (!getBackgroundImage().isEmpty())
-        m_cmbUpImage->setCurrentIndex(m_cmbUpImage->findText(getBackgroundImage()));
+        m_cmbUpImage->setCurrentIndex(m_cmbUpImage->findText(getBackgroundImage().section()));
 
     QLabel *lblLabelDownImage = new QLabel("Down Image:");
     m_cmbDownImage = new QComboBox;
@@ -70,11 +70,27 @@ QGridLayout *ButtonMECS::GetPropertiesWidgets()
 
 void ButtonMECS::AcceptWidgetsProperties()
 {
-    setBackgroundImage(m_cmbUpImage->currentText());
+    setBackgroundImage(Project::ImagesDirectory
+                       + QString("/") + m_cmbUpImage->currentText());
     m_downImage = m_cmbDownImage->currentText();
     m_heldImage = m_cmbHeldImage->currentText();
     if (addOnClickAction)
-        m_onClickActionString = m_onClickAction->ToString();
+        m_onClickActionString = m_onClickAction->ToString();    
+}
+
+void ButtonMECS::SetDownImage(QString image)
+{
+    m_downImage = image;
+}
+
+void ButtonMECS::SetHeldImage(QString image)
+{
+    m_heldImage = image;
+}
+
+void ButtonMECS::SetOnClickAction(QString commandType, QString target, QString command)
+{
+    m_onClickActionString = " " + commandType + " " + target + " " + command;    
 }
 
 QString ButtonMECS::Save()

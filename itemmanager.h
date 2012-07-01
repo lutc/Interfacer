@@ -3,7 +3,9 @@
 
 #include <QObject>
 #include <QVector>
+#include <QMap>
 #include <QDebug>
+#include <QTabWidget>
 #include "commonitemmecs.h"
 #include "page.h"
 
@@ -17,6 +19,8 @@ public:
     int AddItem(Page *);
 
     QStringList GetPages();
+    void SetTabWidget(QTabWidget * widget);
+    void RefreshTabWidget();
 
 signals:
 
@@ -28,9 +32,10 @@ private:
     ItemManager();
     ItemManager(const ItemManager&);
     ItemManager& operator =(const ItemManager&);
-    QVector<CommonItemMECS *> items;
-    QVector<Page *> pages;
+    QVector<CommonItemMECS *> m_items;
+    QMap<QString, Page *> m_pages;
     static ItemManager* m_instance;
+    QTabWidget *m_tabWidget;
 
 };
 

@@ -150,9 +150,14 @@ void CommonItemMECS::setBackgroundImage(QString newImage)
     if (m_backgroundImage.isEmpty())
         return;
     QString backgroundImagePath =
-            Project::PathToProject + Project::ImagesDirectory
-            + QString("/") + m_backgroundImage;
+            Project::PathToProject + m_backgroundImage;
+
     m_backGroundImageCache = new QImage(backgroundImagePath);
+}
+
+void CommonItemMECS::setPage(QString page)
+{
+    m_page = page;
 }
 
 qreal CommonItemMECS::getWidth()
@@ -173,6 +178,18 @@ QString CommonItemMECS::getText()
 QString CommonItemMECS::getBackgroundImage()
 {
     return m_backgroundImage;
+}
+
+QString CommonItemMECS::getPage()
+{
+    return m_page;
+}
+
+void CommonItemMECS::UpdatePosition()
+{
+    setX(x);
+    setY(y);
+    setBackgroundImage(m_backgroundImage);
 }
 
 bool CommonItemMECS::isRemoved()

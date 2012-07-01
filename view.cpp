@@ -109,7 +109,7 @@ View::View(QWidget *parent)
     labelLayout->addWidget(m_btnSave);
 
     m_tabWidget = new QTabWidget;
-    AddPage();
+//    AddPage();
 
     QGridLayout *topLayout = new QGridLayout;
     topLayout->addLayout(labelLayout, 0, 0);
@@ -125,7 +125,10 @@ View::View(QWidget *parent)
     connect(m_btnAddPage, SIGNAL(clicked()), this, SLOT(AddPage()));
     connect(m_btnSave, SIGNAL(clicked()), ItemManager::Instance(), SLOT(GenerateInterface()));
     connect(m_btnLoad, SIGNAL(clicked()), ItemManager::Instance(), SLOT(LoadFromFile()));
-    connect(m_btnAddDevice, SIGNAL(clicked()), this, SLOT(AddDevice()));    
+    connect(m_btnAddDevice, SIGNAL(clicked()), this, SLOT(AddDevice()));
+
+    ItemManager::Instance()->SetTabWidget(m_tabWidget);
+    ItemManager::Instance()->RefreshTabWidget();
 }
 
 
@@ -178,21 +181,13 @@ void View::AddItem(CommonItemMECS::ItemTypes type, int x, int y)
 }
 
 void View::AddPage()
-{
-    QGraphicsView *graphicsView = new QGraphicsView();
+{    
     Page *page = new Page;
     ItemManager::Instance()->AddItem(page);
+
+    QGraphicsView *graphicsView = Page::GenerateGraphicsView();
     graphicsView->setScene(page);
     connect(((Page*)graphicsView->scene()), SIGNAL(selectionChanged()), this, SLOT(ChangeTabName()));
-
-    graphicsView->setRenderHint(QPainter::Antialiasing, false);
-    graphicsView->setDragMode(QGraphicsView::RubberBandDrag);
-    graphicsView->setOptimizationFlags(QGraphicsView::DontSavePainterState);
-    graphicsView->setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);
-    #ifndef QT_NO_OPENGL
-    graphicsView->setViewport(new QGLWidget(QGLFormat(QGL::SampleBuffers)));
-    #endif
-    graphicsView->setRenderHint(QPainter::Antialiasing, true);
 
     m_tabWidget->setUpdatesEnabled(false);
     m_tabWidget->addTab(graphicsView, "Main");

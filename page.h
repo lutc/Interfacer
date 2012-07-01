@@ -2,6 +2,7 @@
 #define PAGE_H
 
 #include <QGraphicsScene>
+#include <QGraphicsView>
 #include <QObject>
 
 class Page : public QGraphicsScene
@@ -14,10 +15,14 @@ public:
     Page();
     Page(QString Name, QString Background);
     QString GetName();
+    void UpdateBackground();
     void SetName(QString);
     void SetBackground(QString);
     QString GetBackground() {return m_background;}
     QString Save();
+    void Refresh();
+
+    static QGraphicsView *GenerateGraphicsView();
 protected:
     void drawBackground(QPainter *painter, const QRectF &);
 
