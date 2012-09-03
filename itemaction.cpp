@@ -39,6 +39,8 @@ QHBoxLayout *ItemAction::GetLayout()
             this, SLOT(onTypeActionChange(int)));
     connect(m_cmbTargetAction, SIGNAL(currentIndexChanged(QString)),
             this, SLOT(onTargetActionChange(QString)));
+    connect(m_cmbAction, SIGNAL(currentIndexChanged(QString)), SIGNAL(OnChangeCommand(QString)));
+
 
     QHBoxLayout *actionLayout = new QHBoxLayout;
     actionLayout->addWidget(m_cmbTypeAction);
@@ -46,7 +48,8 @@ QHBoxLayout *ItemAction::GetLayout()
     actionLayout->addWidget(m_cmbAction);
 
     onTypeActionChange(m_cmbTypeAction->currentIndex());
-    onTargetActionChange(m_targetAction);
+    if (m_typeAction.compare("Page", Qt::CaseInsensitive) != 0)
+            onTargetActionChange(m_targetAction);
 
     if (!m_targetAction.isEmpty())
         m_cmbTargetAction->setEditText(m_targetAction);
@@ -64,6 +67,13 @@ QString ItemAction::ToString()
     return m_cmbTypeAction->currentText()
             + " " + m_cmbTargetAction->currentText()
             + " " + m_cmbAction->currentText();
+}
+
+void ItemAction::Init(QString commandType, QString target, QString command)
+{
+    m_typeAction = commandType;
+    m_targetAction = target;
+    m_action = command;
 }
 
 void ItemAction::onTypeActionChange(int cmbValue)

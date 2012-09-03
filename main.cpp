@@ -47,6 +47,7 @@
 #include <QDebug>
 #include <QFileDialog>
 #include "project.h"
+#include <QIcon>
 
 
 int main(int argc, char **argv)
@@ -55,6 +56,8 @@ int main(int argc, char **argv)
 
     QApplication app(argc, argv);
     app.setAttribute(Qt::AA_DontCreateNativeWidgetSiblings);
+	QIcon icon("viking.ico");
+	app.setWindowIcon(icon);
 
     QString path = "";
     if (argc > 1)

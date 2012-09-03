@@ -145,7 +145,7 @@ void CommonItemMECS::setText(QString newText)
 }
 
 void CommonItemMECS::setBackgroundImage(QString newImage)
-{
+{    
     m_backgroundImage = newImage;
     if (m_backgroundImage.isEmpty())
         return;
@@ -182,12 +182,12 @@ QString CommonItemMECS::getBackgroundImage()
 
 QString CommonItemMECS::getPage()
 {
-    return m_page;
+	return m_page;
 }
 
 void CommonItemMECS::UpdatePosition()
 {
-    setX(x);
+	setX(x);
     setY(y);
     setBackgroundImage(m_backgroundImage);
 }

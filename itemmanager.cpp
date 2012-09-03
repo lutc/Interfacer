@@ -42,7 +42,7 @@ ItemManager *ItemManager::Instance()
 void ItemManager::GenerateInterface()
 {
     Project::GenerateDevicesFile();
-    QFile file("interface");
+    QFile file(Project::PathToProject + "interface");
     file.open(QIODevice::WriteOnly | QIODevice::Text);
     QTextStream out(&file);
     out.setCodec("Windows-1251");

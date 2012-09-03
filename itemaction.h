@@ -13,7 +13,9 @@ public:
     void operator =(ItemAction &);
     QHBoxLayout *GetLayout();
     QString ToString();
+    void Init(QString commandType, QString target, QString command);
 signals:
+    void OnChangeCommand(QString command);
 
 public slots:
 

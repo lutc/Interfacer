@@ -40,6 +40,7 @@ private:
     ItemAction *m_onClickAction;
 
     QString m_onClickActionString;
+
 };
 
 #endif // BUTTONMESC_H

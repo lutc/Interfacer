@@ -70,6 +70,12 @@ void Page::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
     properties->show();
 }
 
+void Page::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+    QGraphicsScene::mousePressEvent(event);
+    m_newPos = event->buttonDownScenePos(Qt::RightButton);
+}
+
 void Page::UpdateBackground()
 {
     SetBackground(m_background);
@@ -97,6 +103,6 @@ QString Page::Save()
 {
     return QString("[Page]\n" \
             "Name = %0\n" \
-                   "Background = Images/%1\n\n").arg(GetName()).arg(m_background);
+                   "Background = %1\n\n").arg(GetName()).arg(m_background);
 
 }

@@ -21,6 +21,7 @@ public:
     QString GetBackground() {return m_background;}
     QString Save();
     void Refresh();
+    QPointF GetNewPosition(){ return m_newPos; }
 
     static QGraphicsView *GenerateGraphicsView();
 protected:
@@ -30,9 +31,12 @@ private:
     QString m_background;
     QImage *m_backgroundImage;
     QString m_name;
+    QPointF m_newPos;
 
 public slots:
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event);
+    void mousePressEvent(QGraphicsSceneMouseEvent *event);
+
 signals:
     void nameChanged(QString);
 };

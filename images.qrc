@@ -5,5 +5,6 @@
         <file>rotateleft.png</file>
         <file>rotateright.png</file>
         <file>fileprint.png</file>
+        <file>viking.ico</file>
     </qresource>
 </RCC>

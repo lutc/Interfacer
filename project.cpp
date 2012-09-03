@@ -13,7 +13,7 @@
 QString Project::PathToProject;
 const QString Project::m_LircdConfPath = "etc/lirc/lircd.conf";
 
-const QString Project::ImagesDirectory = QString("/Images");
+const QString Project::ImagesDirectory = QString("Images");
 const QString Project::ControllerDirectory = QString("/controller");
 QMap<QString, Lirc *> Project::m_lircConfiges;
 QMap<QString, Device*> Project::m_devices;
@@ -122,9 +122,16 @@ QStringList Project::GetDeviceCommands(QString deviceName)
 
 void Project::GenerateDevicesFile()
 {
+	QFile file(Project::PathToProject + "protocols all");
+	file.open(QIODevice::WriteOnly | QIODevice::Text);
+	QTextStream out(&file);
+//    out.setCodec("Windows-1251");
+
     foreach (Device *device, m_devices) {
         generateDeviceFile(device);
+		out << "controller/" + device->GetFileName() << endl;
     }
+	file.close();
 }
 
 
@@ -260,11 +267,11 @@ DefaultText = Extron
             rawHeldImage.indexIn(rawData, i);
             QString HeldImage= rawHeldImage.cap(1) + "/" + rawHeldImage.cap(2) + "." + rawHeldImage.cap(3);
 
-            QRegExp rawOnClick("OnClick(\\s*)= (\\w+.) (\\w+) (\\w+)");
+			QRegExp rawOnClick("OnClick\\s*=\\s*(\\w+)\\s*(\\w+)([ \\w]*)");
             rawOnClick.indexIn(rawData, i);
-            QString commandType = rawOnClick.cap(2);
-            QString target = rawOnClick.cap(3);
-            QString command = rawOnClick.cap(4);
+			QString commandType = rawOnClick.cap(1).trimmed();
+			QString target = rawOnClick.cap(2).trimmed();
+			QString command = rawOnClick.cap(3).trimmed();
 
             QRegExp rawLeft("Left = (\\d+)");
             rawLeft.indexIn(rawData, i);
@@ -274,7 +281,7 @@ DefaultText = Extron
             rawTop.indexIn(rawData, i);
             QString Top= rawTop.cap(1);
 
-            QRegExp rawCaption("Caption = (\\w+)");
+			QRegExp rawCaption("Caption = ([\\w \\+-]+)");
             rawCaption.indexIn(rawData, i);
             QString Caption= rawCaption.cap(1);
 
@@ -301,7 +308,7 @@ DefaultText = Extron
             button->SetDownImage(DownImage);
             button->SetHeldImage(HeldImage);
             button->SetOnClickAction(commandType, target, command);
-            button->setPage(Pages);
+            button->setPage(Pages);            
             ItemManager::Instance()->AddItem(button);
 
         }
@@ -337,17 +344,17 @@ DefaultText = Extron
             rawHeldImage.indexIn(rawData, i);
             QString HeldImage= rawHeldImage.cap(1) + "/" + rawHeldImage.cap(2) + "." + rawHeldImage.cap(3);
 
-            QRegExp rawOnDown("OnDown(\\s*)= (\\w+.) (\\w+) (\\w+)");
+			QRegExp rawOnDown("OnDown\\s*=\\s*(\\w+)\\s*(\\w+)([ \\w]*)");
             rawOnDown.indexIn(rawData, i);
-            QString commandTypeDown = rawOnDown.cap(2);
-            QString targetDown = rawOnDown.cap(3);
-            QString commandDown = rawOnDown.cap(4);
+			QString commandTypeDown = rawOnDown.cap(1).trimmed();
+			QString targetDown = rawOnDown.cap(2).trimmed();
+			QString commandDown = rawOnDown.cap(3).trimmed();
 
-            QRegExp rawOnUp("OnUp(\\s*)= (\\w+.) (\\w+) (\\w+)");
+			QRegExp rawOnUp("OnUp\\s*=\\s*(\\w+)\\s*(\\w+)([ \\w]*)");
             rawOnUp.indexIn(rawData, i);
-            QString commandTypeUp = rawOnUp.cap(2);
-            QString targetUp = rawOnUp.cap(3);
-            QString commandUp = rawOnUp.cap(4);
+			QString commandTypeUp = rawOnUp.cap(1).trimmed();
+			QString targetUp = rawOnUp.cap(2).trimmed();
+			QString commandUp = rawOnUp.cap(3).trimmed();
 
             QRegExp rawLeft("Left = (\\d+)");
             rawLeft.indexIn(rawData, i);
@@ -357,7 +364,7 @@ DefaultText = Extron
             rawTop.indexIn(rawData, i);
             QString Top= rawTop.cap(1);
 
-            QRegExp rawCaption("Caption = (\\w+)");
+			QRegExp rawCaption("Caption = ([\\w ]+)");
             rawCaption.indexIn(rawData, i);
             QString Caption= rawCaption.cap(1);
 
@@ -383,7 +390,8 @@ DefaultText = Extron
             button->setBackgroundImage(UpImage);
             button->SetDownImage(DownImage);
             button->SetHeldImage(HeldImage);
-//            button->Set(commandType, target, command);
+			button->SetOnUpAction(commandTypeUp, targetUp, commandUp);
+			button->SetOnDownAction(commandTypeDown, targetDown, commandDown);
             button->setPage(Pages);
             ItemManager::Instance()->AddItem(button);
         }
@@ -402,6 +410,7 @@ void Project::ParseAllDevicesFromProjectRoot()
 
     foreach (QFileInfo info, dirContent)
     {
+		qDebug() << info.filePath();
         Project::Instance()->ParseDevice(info.filePath());
     }
 }

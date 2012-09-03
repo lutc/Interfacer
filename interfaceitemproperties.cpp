@@ -78,6 +78,6 @@ void InterfaceItemProperties::accept()
         m_DefaultItem = m_item;
     else
         m_DefaultItem = NULL;
-    isDefault = chkSaveAsDefault->isChecked();
+    isDefault = chkSaveAsDefault->isChecked();    
     QDialog::accept();
 }

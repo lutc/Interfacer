@@ -15,9 +15,12 @@ QString ToggleButtonMECS::GetName()
 
 QGridLayout *ToggleButtonMECS::GetPropertiesWidgets()
 {
-    QGridLayout *layout = ButtonMECS::GetPropertiesWidgets();
-    layout->addLayout(m_onUpAction->GetLayout(), 3, 0, 1, 2);
-    layout->addLayout(m_onDownAction->GetLayout(), 4, 0, 1, 2);
+    QGridLayout *layout = ButtonMECS::GetPropertiesWidgets();    
+    layout->addWidget(new QLabel("On up action"), 3, 0, 1, 2);
+    layout->addLayout(m_onUpAction->GetLayout(), 4, 0, 1, 2);
+
+    layout->addWidget(new QLabel("On down action"), 5, 0, 1, 2);
+    layout->addLayout(m_onDownAction->GetLayout(), 6, 0, 1, 2);
     return layout;
 }
 
@@ -38,5 +41,12 @@ QString ToggleButtonMECS::Save()
 
 void ToggleButtonMECS::SetOnUpAction(QString commandType, QString target, QString command)
 {
+    m_onUpAction->Init(commandType, target, command);
+    m_onUpActionString = commandType + " " + target + " " + command;
+}
 
+void ToggleButtonMECS::SetOnDownAction(QString commandType, QString target, QString command)
+{
+    m_onDownAction->Init(commandType, target, command);
+    m_onDownActionString = commandType + " " + target + " " + command;
 }

@@ -15,7 +15,7 @@ AddMethodDialog::~AddMethodDialog()
 
 QString AddMethodDialog::CommandName()
 {
-    return ui->txtCommandName->text();
+	return ui->txtCommandName->text().toLower();
 }
 
 QString AddMethodDialog::Command()

@@ -14,6 +14,7 @@ public:
     QString Save();
 
     void SetOnUpAction(QString commandType, QString target, QString command);
+    void SetOnDownAction(QString commandType, QString target, QString command);
 private:
     ItemAction *m_onUpAction;
     ItemAction *m_onDownAction;

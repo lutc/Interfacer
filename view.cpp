@@ -66,10 +66,13 @@ View::View(QWidget *parent)
 
     m_btnAddButton = new QToolButton;
     m_btnAddButton->setText("Add button");
+    m_btnAddButton->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_B));
     m_btnAddTogleButton = new QToolButton;
     m_btnAddTogleButton->setText("Add TogleButton");
+    m_btnAddTogleButton->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_T));
     m_btnAddText = new QToolButton;
     m_btnAddText->setText("Add Text");
+    m_btnAddText->setShortcut(QKeySequence(Qt::ALT + Qt::Key_T));
 
     m_btnAddIndicator = new QToolButton;
     m_btnAddIndicator->setText("Add Indicator");
@@ -176,7 +179,11 @@ void View::AddItem(CommonItemMECS::ItemTypes type, int x, int y)
     }
 
     QGraphicsView *graphicsView = qobject_cast<QGraphicsView *>(m_tabWidget->currentWidget());
+
     graphicsView->scene()->addItem(item);
+
+    item->setPos((qobject_cast<Page *>(graphicsView->scene()))->GetNewPosition());
+
     ItemManager::Instance()->AddItem((CommonItemMECS*)item);
 }
 
