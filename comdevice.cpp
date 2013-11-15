@@ -27,6 +27,20 @@ QString ComDevice::Save()
     foreach (QString commands, m_commands.values()) {
         result += commands;
     }
+
+	result += QString(
+					  "query\n"\
+					  "{\n"					  \
+						  "receive\n"\
+					  "{\n"\
+						  "timeout\n"\
+				"{\n"\
+				"set state unknown\n"\
+				"}\n"\
+				"}\n"\
+				"}\n"\
+
+					  );
     return result;
 }
 

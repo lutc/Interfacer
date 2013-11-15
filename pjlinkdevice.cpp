@@ -26,6 +26,45 @@ QString PJLinkDevice::Save()
     foreach (QString commands, m_commands) {
         result += commands;
     }
+	result += QString(
+					  "query\n"\
+				"{send " + m_name +" (\"%1POWR ?\" cr)	\n"					  \
+						  "receive\n"\
+					  "{\n"\
+						  "timeout\n"\
+				"{\n"\
+				"set state unknown\n"\
+				"}\n"\
+				"}\n"\
+				"}\n"\
+
+					  );
+
+/*
+	query
+	{
+		send Epson ("%1POWR ?" cr)
+
+		receive
+		{
+			("%1POWR=1" cr)
+		{
+				set state enabled
+		}
+			("%1POWR=0" cr)
+		{
+				set state disabled
+		}
+		("%1POWR=ERR" N:8 cr)
+		{
+			set state error
+		}
+			timeout
+		{
+			set state unknown
+		}
+		}
+	}*/
     return result;
 }
 

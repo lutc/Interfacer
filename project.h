@@ -18,6 +18,7 @@ public:
     static Project *Instance();
 
     static QString PathToProject;
+	static QString Codepage;
     static QString PathToDevices() {return Project::PathToProject + "controller/"; }
     static const QString ImagesDirectory;
     static const QString ControllerDirectory;

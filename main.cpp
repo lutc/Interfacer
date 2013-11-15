@@ -70,6 +70,10 @@ int main(int argc, char **argv)
                                                         | QFileDialog::DontResolveSymlinks);
 
     }
+
+	if (argc > 2)
+		Project::Codepage = argv[2];
+
     if (path.length() > 0)
         Project::PathToProject = path;
 

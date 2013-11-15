@@ -45,7 +45,7 @@ void ItemManager::GenerateInterface()
     QFile file(Project::PathToProject + "interface");
     file.open(QIODevice::WriteOnly | QIODevice::Text);
     QTextStream out(&file);
-    out.setCodec("Windows-1251");
+	out.setCodec(Project::Codepage.toAscii());
 
     foreach (Page *page, m_pages.values())
     {

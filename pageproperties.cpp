@@ -41,7 +41,7 @@ PageProperties::PageProperties(Page *item) :
 void PageProperties::accept()
 {
     m_item->SetBackground(Project::ImagesDirectory
-                          + QString("/") + m_cmbBackgroundImage->currentText());
+                          + QString("/") + m_cmbBackgroundImage->currentText());	
     m_item->SetName(m_txtName->text());
 
     QDialog::accept();

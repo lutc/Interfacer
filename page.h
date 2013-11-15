@@ -25,7 +25,7 @@ public:
 
     static QGraphicsView *GenerateGraphicsView();
 protected:
-    void drawBackground(QPainter *painter, const QRectF &);
+	void drawBackground(QPainter *painter, const QRectF & rect);
 
 private:
     QString m_background;

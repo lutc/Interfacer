@@ -53,11 +53,13 @@ QGraphicsView *Page::GenerateGraphicsView()
     return graphicsView;
 }
 
-void Page::drawBackground(QPainter *painter, const QRectF &)
+void Page::drawBackground(QPainter *painter, const QRectF &rect)
 {
-    if (m_background.isEmpty())
-        return;
-    painter->drawImage(QPoint(0, 0), *m_backgroundImage );
+	if (m_background.isEmpty())
+		return;
+	painter->drawImage(QRect(0, 0, 1200, 650), *m_backgroundImage);
+//	QGraphicsScene::drawBackground(painter, rect);
+//	painter->setBackground(QBrush(*m_backgroundImage));
 }
 
 void Page::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)

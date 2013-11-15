@@ -11,6 +11,7 @@
 #include "togglebuttonmecs.h"
 
 QString Project::PathToProject;
+QString Project::Codepage = "UTF-8";
 const QString Project::m_LircdConfPath = "etc/lirc/lircd.conf";
 
 const QString Project::ImagesDirectory = QString("Images");
@@ -88,7 +89,7 @@ void Project::generateDeviceFile(Device *device)
     QFile file(Project::PathToDevices()  + device->GetFileName());
     file.open(QIODevice::WriteOnly | QIODevice::Text);
     QTextStream out(&file);
-//    out.setCodec("Windows-1251");
+	out.setCodec(Project::Codepage.toAscii());
     out << device->Save();
     file.close();
 }
@@ -125,7 +126,7 @@ void Project::GenerateDevicesFile()
 	QFile file(Project::PathToProject + "protocols all");
 	file.open(QIODevice::WriteOnly | QIODevice::Text);
 	QTextStream out(&file);
-//    out.setCodec("Windows-1251");
+	out.setCodec(Project::Codepage.toAscii());
 
     foreach (Device *device, m_devices) {
         generateDeviceFile(device);
@@ -150,7 +151,7 @@ Project *Project::Instance()
 
 bool Project::ParseInterface()
 {
-    QString rawData = readFile(Project::PathToProject + "/interface");
+	QString rawData = readFile(Project::PathToProject + "/interface");
 
     int i = 0;
 
@@ -230,6 +231,7 @@ DefaultText = Extron
             QRegExp rawDefaultText("DefaultText = (\\w+)");
             rawDefaultText.indexIn(rawData, i);
             QString DefaultText= rawDefaultText.cap(1);
+			qDebug() << DefaultText;
 
             TextMESC *text = new TextMESC(Left.toInt(), Top.toInt());
             text->setWidth(Width.toInt());
@@ -254,6 +256,8 @@ DefaultText = Extron
 //            HeldImage = Images/menu_light_btn.png
 //            OnClick  = Command Mitsubishil poweron
 
+//			  OnHold = Command Mitsubishil poweron
+
             QRegExp rawUpImage("UpImage = (\\w+.)/(\\w+)\\.(\\w+)");
             rawUpImage.indexIn(rawData, i);
             QString UpImage= rawUpImage.cap(1) + "/" + rawUpImage.cap(2) + "." + rawUpImage.cap(3);
@@ -272,6 +276,14 @@ DefaultText = Extron
 			QString commandType = rawOnClick.cap(1).trimmed();
 			QString target = rawOnClick.cap(2).trimmed();
 			QString command = rawOnClick.cap(3).trimmed();
+
+
+//			QRegExp rawOnHold("OnHold\\s*=\\s*(\\w+)\\s*(\\w+)([ \\w]*)");
+//			rawOnHold.indexIn(rawData, i);
+//			QString holdType = rawOnHold.cap(1).trimmed();
+//			QString holdtarget = rawOnHold.cap(2).trimmed();
+//			QString holdcommand = rawOnHold.cap(3).trimmed();
+
 
             QRegExp rawLeft("Left = (\\d+)");
             rawLeft.indexIn(rawData, i);
@@ -404,7 +416,7 @@ void Project::ParseAllDevicesFromProjectRoot()
 {
     QDir dir(Project::PathToProject + "controller/");
     QStringList filter;
-    filter  << "*.pjlink" << "*.rj45" << "*.rs232" << "*.lirc";
+	filter  << "*.pjlink" << "*.rj45" << "*.rs232" << "*.local";// << "*.lirc";
     QFileInfoList dirContent = dir.entryInfoList(filter, QDir::Files | QDir::NoDotAndDotDot);
 
 
@@ -421,7 +433,8 @@ QString Project::readFile(QString filename)
 
     file.open(QIODevice::ReadOnly | QIODevice::Text);
     QTextStream inStream(&file);
-    inStream.setCodec("Windows-1251");
+	inStream.setCodec(Project::Codepage.toAscii());
+//	inStream.setCodec("UTF-8");
     QString rawData = inStream.readAll();
     file.close();
     return rawData;
@@ -470,7 +483,7 @@ bool Project::ParseDevice(QString filename)
             parsedDevice->addCommand(rawMethod.cap(1), rawMethod.cap(2));
         }        
     }
-    else if (type.compare("tcp") == 0)
+	else if (type.compare("tcp") == 0)
     {
         QRegExp rawTargetIp("target-ip: \"([\\d|\\.]+)\\:(\\d+)");
         rawTargetIp.indexIn(rawData, 0);

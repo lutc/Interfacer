@@ -66,7 +66,7 @@ QGridLayout *ButtonMECS::GetPropertiesWidgets()
     m_cmbHeldImage->addItems(Project::GetImages());
     if (!m_heldImage.isEmpty())
     {
-        QStringList list = m_downImage.split('/');
+		QStringList list = m_heldImage.split('/');
         m_cmbHeldImage->setCurrentIndex(m_cmbHeldImage->findText(list[1]));
 
         if (list.count() > 1)
