@@ -95,9 +95,9 @@ void Page::SetName(QString newName)
 }
 void Page::SetBackground(QString path)
 {
-    m_background = path;
+	m_background = path;
     QString backgroundImagePath =
-            Project::PathToProject + m_background;
+			Project::PathToProject + m_background;
     m_backgroundImage = new QImage(backgroundImagePath);
 }
 
@@ -105,6 +105,6 @@ QString Page::Save()
 {
     return QString("[Page]\n" \
             "Name = %0\n" \
-                   "Background = %1\n\n").arg(GetName()).arg(m_background);
+				   "Background = %1\n\n").arg(GetName()).arg(m_background);
 
 }

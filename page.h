@@ -17,7 +17,7 @@ public:
     QString GetName();
     void UpdateBackground();
     void SetName(QString);
-    void SetBackground(QString);
+	void SetBackground(QString);
     QString GetBackground() {return m_background;}
     QString Save();
     void Refresh();
@@ -28,7 +28,7 @@ protected:
 	void drawBackground(QPainter *painter, const QRectF & rect);
 
 private:
-    QString m_background;
+	QString m_background;
     QImage *m_backgroundImage;
     QString m_name;
     QPointF m_newPos;
