@@ -1,18 +1,24 @@
 #include "pjlinkdevice.h"
+#include <QDebug>
 
 const QString PJLinkDevice::DEFAULT_PORT = "4352";
 
 PJLinkDevice::PJLinkDevice(QString deviceName, QString ip, QString port) :
     Device(deviceName)
 {
-    m_ip = ip;
+    m_ip = ip;	
+	qDebug() << m_ip;
     m_caseSensitive = "false";
     if (port.isEmpty())
+	{
         m_port = DEFAULT_PORT;
-    addCommand("poweron", "\"%1POWR 1\" cr");
-    addCommand("poweroff", "\"%1POWR 0\" cr");
-    addCommand("muteon", "\"%1AVMT 31\" cr");
-    addCommand("muteoff", "\"%1AVMT 30\" cr");
+		addCommand("poweron", "\"%1POWR 1\" cr");
+		addCommand("poweroff", "\"%1POWR 0\" cr");
+		addCommand("muteon", "\"%1AVMT 31\" cr");
+		addCommand("muteoff", "\"%1AVMT 30\" cr");
+	}
+	else
+		m_port = port;
 }
 
 QString PJLinkDevice::Save()
@@ -28,14 +34,26 @@ QString PJLinkDevice::Save()
     }
 	result += QString(
 					  "query\n"\
-				"{send " + m_name +" (\"%1POWR ?\" cr)	\n"					  \
-						  "receive\n"\
-					  "{\n"\
-						  "timeout\n"\
-				"{\n"\
-				"set state unknown\n"\
-				"}\n"\
-				"}\n"\
+				"{\n\tsend " + m_name +" (\"%1POWR ?\" cr)	\n"					  \
+						  "\treceive\n"\
+					  "\t{\n"\
+				"\t\t(\"%1POWR=1\" cr)\n"\
+				"\t\t{\n"\
+					"\t\t\tset state enabled\n"\
+				"\t\t}\n"\
+				"\t\t(\"%1POWR=0\" cr)\n"\
+				"\t\t{\n"\
+					"\t\t\tset state disabled\n"\
+				"\t\t}\n"\
+				"\t\t(\"%1POWR=ERR\" N:8 cr)\n"\
+				"\t\t{\n"\
+				"\t\t\tset state error\n"\
+				"\t\t}\n"\
+						  "\t\ttimeout\n"\
+				"\t\t{\n"\
+				"\t\t\tset state unknown\n"\
+				"\t\t}\n"\
+				"\t}\n"\
 				"}\n"\
 
 					  );

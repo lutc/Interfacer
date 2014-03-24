@@ -91,6 +91,7 @@ void AddEditDeviceDialog::accept()
             QString separatorIp(".");
             QString ip = ui->spnIp0->text().append(separatorIp).append(ui->spnIp1->text()).append(separatorIp).
                     append(ui->spnIp2->text()).append(separatorIp).append(ui->spnIp3->text());
+			qDebug() << ip << " " << ui->spnPortTcp->text();
             if (ui->cmbType->currentIndex() == AddEditDeviceDialog::PJLink)
                 m_device = new PJLinkDevice(ui->txtName->text(), ip);
             else

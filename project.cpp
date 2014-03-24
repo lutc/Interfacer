@@ -293,7 +293,7 @@ DefaultText = Extron
             rawTop.indexIn(rawData, i);
             QString Top= rawTop.cap(1);
 
-			QRegExp rawCaption("Caption = ([\\w \\+-]+)");
+			QRegExp rawCaption("Caption = ([\\w \\+-]*)");
             rawCaption.indexIn(rawData, i);
             QString Caption= rawCaption.cap(1);
 
