@@ -2,8 +2,6 @@
 #include <QRegExp>
 #include <QStringList>
 
-#include <QDebug>
-
 const QString Lirc::CommandSeparator = "begin remote";
 Lirc::Lirc():
     m_name(""), m_isBroken(false)

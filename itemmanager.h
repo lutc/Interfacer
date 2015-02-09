@@ -4,7 +4,6 @@
 #include <QObject>
 #include <QVector>
 #include <QMap>
-#include <QDebug>
 #include <QTabWidget>
 #include "commonitemmecs.h"
 #include "page.h"

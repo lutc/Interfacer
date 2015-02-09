@@ -3,7 +3,6 @@
 
 #include "project.h"
 
-#include <QDebug>
 ItemAction::ItemAction(QObject *parent) :
     QObject(parent)
 {

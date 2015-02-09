@@ -7,10 +7,11 @@
 #include "project.h"
 #include "pageproperties.h"
 
-#include <QDebug>
 #include <QMetaProperty>
 #ifndef QT_NO_OPENGL
-#include <QtOpenGL>
+#include <QtOpenGLDepends>
+#include <QtWidgets/QWidget>
+#include <QtOpenGLExtensions/QOpenGLExtensions>
 #endif
 
 Page::Page():
@@ -21,13 +22,13 @@ Page::Page():
 
 void Page::Refresh()
 {
-    int sceneHeight = 650;
-    int sceneWidth = 1200;
-    addRect(0, 0, sceneWidth, sceneHeight);
-    for (int i = CommonItemMECS::stepOfGrid; i < sceneWidth; i += CommonItemMECS::stepOfGrid)
-        addLine(i, 0, i, sceneHeight);
-    for (int i = CommonItemMECS::stepOfGrid; i < sceneHeight; i += CommonItemMECS::stepOfGrid)
-        addLine(0, i, sceneWidth, i);
+	SCENE_HEIGHT = 900;
+	SCENE_WIDTH = 1800;
+	addRect(0, 0, SCENE_WIDTH, SCENE_HEIGHT);
+    for (int i = CommonItemMECS::stepOfGrid; i < SCENE_WIDTH; i += CommonItemMECS::stepOfGrid)
+		addLine(i, 0, i, SCENE_HEIGHT);
+	for (int i = CommonItemMECS::stepOfGrid; i < SCENE_HEIGHT; i += CommonItemMECS::stepOfGrid)
+		addLine(0, i, SCENE_WIDTH, i);
 }
 
 Page::Page(QString Name, QString Background)
@@ -47,17 +48,17 @@ QGraphicsView *Page::GenerateGraphicsView()
     graphicsView->setOptimizationFlags(QGraphicsView::DontSavePainterState);
     graphicsView->setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);
     #ifndef QT_NO_OPENGL
-    graphicsView->setViewport(new QGLWidget(QGLFormat(QGL::SampleBuffers)));
+    //graphicsView->setViewport(new QGLWidget(QGLFormat(QGL::SampleBuffers)));
     #endif
     graphicsView->setRenderHint(QPainter::Antialiasing, true);
     return graphicsView;
 }
 
-void Page::drawBackground(QPainter *painter, const QRectF &rect)
+void Page::drawBackground(QPainter *painter, const QRectF &)
 {
 	if (m_background.isEmpty())
 		return;
-	painter->drawImage(QRect(0, 0, 1200, 650), *m_backgroundImage);
+	painter->drawImage(QRect(0, 0, SCENE_WIDTH, SCENE_HEIGHT), *m_backgroundImage);
 //	QGraphicsScene::drawBackground(painter, rect);
 //	painter->setBackground(QBrush(*m_backgroundImage));
 }

@@ -2,8 +2,8 @@
 #define ITEMPROPERTIES_H
 
 #include <QDialog>
-#include <QtGui/QComboBox>
-#include <QtGui/QLineEdit>
+#include <QComboBox>
+#include <QLineEdit>
 #include <QDialogButtonBox>
 #include <QCheckBox>
 #include "commonitemmecs.h"

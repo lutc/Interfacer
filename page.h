@@ -25,13 +25,15 @@ public:
 
     static QGraphicsView *GenerateGraphicsView();
 protected:
-	void drawBackground(QPainter *painter, const QRectF & rect);
+    void drawBackground(QPainter *painter, const QRectF & );
 
 private:
 	QString m_background;
     QImage *m_backgroundImage;
     QString m_name;
     QPointF m_newPos;
+	int SCENE_HEIGHT;
+	int SCENE_WIDTH;
 
 public slots:
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event);

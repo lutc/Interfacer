@@ -1,13 +1,11 @@
 #include "pjlinkdevice.h"
-#include <QDebug>
 
 const QString PJLinkDevice::DEFAULT_PORT = "4352";
 
 PJLinkDevice::PJLinkDevice(QString deviceName, QString ip, QString port) :
     Device(deviceName)
 {
-    m_ip = ip;	
-	qDebug() << m_ip;
+    m_ip = ip;		
     m_caseSensitive = "false";
     if (port.isEmpty())
 	{
@@ -58,31 +56,7 @@ QString PJLinkDevice::Save()
 
 					  );
 
-/*
-	query
-	{
-		send Epson ("%1POWR ?" cr)
 
-		receive
-		{
-			("%1POWR=1" cr)
-		{
-				set state enabled
-		}
-			("%1POWR=0" cr)
-		{
-				set state disabled
-		}
-		("%1POWR=ERR" N:8 cr)
-		{
-			set state error
-		}
-			timeout
-		{
-			set state unknown
-		}
-		}
-	}*/
     return result;
 }
 

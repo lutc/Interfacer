@@ -41,11 +41,13 @@
 
 #include "commonitemmecs.h"
 
-#include <QtGui>
+//#include <QtGui>
 
 #include "interfaceitemproperties.h"
 #include "project.h"
 #include "page.h"
+//QGraphicsSceneMouseEvent
+#include <QGraphicsSceneMouseEvent>
 
 int CommonItemMECS::stepOfGrid = 25;
 
@@ -59,7 +61,7 @@ CommonItemMECS::CommonItemMECS(int x, int y):
     setZValue((x + y) % 2);
 
     setFlags(ItemIsSelectable | ItemIsMovable);
-    setAcceptsHoverEvents(true);
+    setAcceptHoverEvents(true);
 }
 
 QRectF CommonItemMECS::boundingRect() const
@@ -225,19 +227,25 @@ QString CommonItemMECS::Save()
 
 void CommonItemMECS::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
+
     QGraphicsItem::mousePressEvent(event);
-    if (event->button() == Qt::RightButton)
+
+
+     if (event->button() == Qt::RightButton)
         m_removed = !m_removed;
+
     update();
 }
 
 void CommonItemMECS::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
+
     if (event->modifiers() & Qt::ShiftModifier) {
         stuff << event->pos();
         update();
         return;
     }
+
     QGraphicsItem::mouseMoveEvent(event);
 }
 

@@ -1,5 +1,4 @@
 #include "device.h"
-#include <QDebug>
 
 Device::Device(QString name) :
     QObject(0)

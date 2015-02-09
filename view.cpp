@@ -97,6 +97,12 @@ View::View(QWidget *parent)
     m_btnAddMethod->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Space));
     connect(m_btnAddMethod, SIGNAL(clicked()), this, SLOT(AddMethod()));
 
+    m_btnShowMethods = new QToolButton;
+    m_btnShowMethods->setText("*");
+    m_btnShowMethods->setEnabled(!m_cmbDevices->currentText().isEmpty());
+    //m_btnShowMethods->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Space));
+    connect(m_btnShowMethods, SIGNAL(clicked()), this, SLOT(ShowMethods()));
+
     labelLayout->addWidget(m_btnAddButton);
     labelLayout->addWidget(m_btnAddTogleButton);
     labelLayout->addWidget(m_btnAddText);
@@ -107,6 +113,7 @@ View::View(QWidget *parent)
     labelLayout->addStretch();
     labelLayout->addWidget(m_cmbDevices);
     labelLayout->addWidget(m_btnAddMethod);
+    labelLayout->addWidget(m_btnShowMethods);
     labelLayout->addStretch();
     labelLayout->addWidget(m_btnLoad);
     labelLayout->addWidget(m_btnSave);
@@ -226,6 +233,15 @@ void View::AddMethod()
         Device *dev = Project::GetDevice(m_cmbDevices->currentText());
         dev->addCommand(dlg->CommandName(), dlg->Command());
     }
+}
+
+void View::ShowMethods()
+{
+    Device *dev = Project::GetDevice(m_cmbDevices->currentText());
+    QStringList commands = dev->GetCommands();
+    QMessageBox mb;
+    mb.setText(commands.join(", "));
+    mb.exec();
 }
 
 void View::AddPageEx(Page*)

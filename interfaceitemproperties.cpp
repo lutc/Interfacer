@@ -1,8 +1,7 @@
 #include "interfaceitemproperties.h"
-#include <QDebug>
 
-#include <QtGui/QGridLayout>
-#include <QtGui/QLabel>
+#include <QGridLayout>
+#include <QLabel>
 
 #include "project.h"
 

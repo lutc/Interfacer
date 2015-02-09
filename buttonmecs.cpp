@@ -1,6 +1,5 @@
 #include "buttonmecs.h"
 #include <QLabel>
-#include <QDebug>
 #include "project.h"
 
 ButtonMECS::ButtonMECS(int x, int y, bool enableAction):

@@ -1,4 +1,3 @@
-#include <QDebug>
 #include "comdevice.h"
 
 ComDevice::ComDevice(QString deviceName, QString port, QString speed, QString parity, QString characterSize):

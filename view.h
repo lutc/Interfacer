@@ -72,6 +72,7 @@ private slots:
 public slots:
     void UpdateDevices(QStringList);
     void AddMethod();
+    void ShowMethods();
     void AddPageEx(Page*);
     void AddItemEx(QGraphicsItem *);
 
@@ -86,6 +87,7 @@ private:
     QToolButton *m_btnSave;
     QComboBox   *m_cmbDevices;
     QToolButton *m_btnAddMethod;
+    QToolButton *m_btnShowMethods;
 
     QTabWidget  *m_tabWidget;
 

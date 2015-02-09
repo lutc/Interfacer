@@ -2,6 +2,7 @@
 #include <QMutex>
 #include <QFile>
 #include <QGraphicsView>
+#include <QTextStream>
 
 #include "project.h"
 #include "parser.h"
@@ -45,7 +46,7 @@ void ItemManager::GenerateInterface()
     QFile file(Project::PathToProject + "interface");
     file.open(QIODevice::WriteOnly | QIODevice::Text);
     QTextStream out(&file);
-	out.setCodec(Project::Codepage.toAscii());
+    out.setCodec(Project::Codepage.toLatin1());
 
     foreach (Page *page, m_pages.values())
     {

@@ -42,7 +42,8 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <QtGui/qwidget.h>
+#include <qwidget.h>
+//#include <QtGui/qwidget.h>
 
 QT_FORWARD_DECLARE_CLASS(QGraphicsScene)
 QT_FORWARD_DECLARE_CLASS(QGraphicsView)

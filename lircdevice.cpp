@@ -1,7 +1,5 @@
 #include "lircdevice.h"
 
-#include <QDebug>
-
 LircDevice::LircDevice(QString name, Lirc *lirc) :
     Device(name)
 {

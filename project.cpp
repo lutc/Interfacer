@@ -1,10 +1,9 @@
 #include <QTextStream>
 #include "project.h"
 #include "parser.h"
-#include <QDebug>
 #include "pjlinkdevice.h"
 #include "itemmanager.h"
-
+#include <QDebug>
 #include "comdevice.h"
 #include "textmesc.h"
 #include "buttonmecs.h"
@@ -35,6 +34,11 @@ QStringList Project::GetImages()
     //    throw ;
 //    dir->setFilter(QDir::NoDot | QDir::NoDotDot);
     QStringList list = dir->entryList();
+	if (list.empty())
+	{
+		qDebug() << dir->absolutePath();
+		return QStringList();
+	}
     list.removeFirst();
     list.removeFirst();
     return list;
@@ -89,7 +93,7 @@ void Project::generateDeviceFile(Device *device)
     QFile file(Project::PathToDevices()  + device->GetFileName());
     file.open(QIODevice::WriteOnly | QIODevice::Text);
     QTextStream out(&file);
-	out.setCodec(Project::Codepage.toAscii());
+    out.setCodec(Project::Codepage.toLatin1());
     out << device->Save();
     file.close();
 }
@@ -126,7 +130,7 @@ void Project::GenerateDevicesFile()
 	QFile file(Project::PathToProject + "protocols all");
 	file.open(QIODevice::WriteOnly | QIODevice::Text);
 	QTextStream out(&file);
-	out.setCodec(Project::Codepage.toAscii());
+    out.setCodec(Project::Codepage.toLatin1());
 
     foreach (Device *device, m_devices) {
         generateDeviceFile(device);
@@ -151,6 +155,7 @@ Project *Project::Instance()
 
 bool Project::ParseInterface()
 {
+    qDebug() <<Project::PathToProject + "/interface";
 	QString rawData = readFile(Project::PathToProject + "/interface");
 
     int i = 0;
@@ -230,8 +235,7 @@ DefaultText = Extron
 
             QRegExp rawDefaultText("DefaultText = (\\w+)");
             rawDefaultText.indexIn(rawData, i);
-            QString DefaultText= rawDefaultText.cap(1);
-			qDebug() << DefaultText;
+            QString DefaultText= rawDefaultText.cap(1);			
 
             TextMESC *text = new TextMESC(Left.toInt(), Top.toInt());
             text->setWidth(Width.toInt());
@@ -433,7 +437,7 @@ QString Project::readFile(QString filename)
 
     file.open(QIODevice::ReadOnly | QIODevice::Text);
     QTextStream inStream(&file);
-	inStream.setCodec(Project::Codepage.toAscii());
+    inStream.setCodec(Project::Codepage.toLatin1());
 //	inStream.setCodec("UTF-8");
     QString rawData = inStream.readAll();
     file.close();

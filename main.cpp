@@ -44,7 +44,6 @@
 #include <QApplication>
 #include <QFile>
 #include <QTextStream>
-#include <QDebug>
 #include <QFileDialog>
 #include "project.h"
 #include <QIcon>

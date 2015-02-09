@@ -43,7 +43,7 @@
 #define CHIP_H
 
 #include <QtGui/QColor>
-#include <QtGui/QGraphicsItem>
+#include <QGraphicsItem>
 #include <QGridLayout>
 
 class CommonItemMECS : public QGraphicsItem
@@ -89,7 +89,7 @@ protected:
     int m_itemFlags;
 
     qreal m_width;
-    qreal m_height;
+    qreal m_height;    
 
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
