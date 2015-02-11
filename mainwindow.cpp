@@ -44,7 +44,6 @@
 
 #include "view.h"
 
-#include "lircdevice.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QWidget(parent)
@@ -57,18 +56,6 @@ MainWindow::MainWindow(QWidget *parent)
 
 	setWindowTitle(tr("Interfacer"));
 
-
-//    LircDevice *device = new LircDevice("lifeSize", NULL);
-
-//    Project::GetLircComands("lifesize");
-
-//    QString dir = QFileDialog::getExistingDirectory(this, tr("Select Project Directory"),
-//                                                    "/home/lutc/MECS/projects/petrogradsk.adm/rootfs/",
-//                                                    QFileDialog::ShowDirsOnly
-//                                                    | QFileDialog::DontResolveSymlinks);
-
-//    if (dir.length() > 0)
-//        Project::PathToProject = dir;
 }
 
 

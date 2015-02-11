@@ -66,7 +66,11 @@ CommonItemMECS::CommonItemMECS(int x, int y):
 
 QRectF CommonItemMECS::boundingRect() const
 {
-    return QRectF(0, 0, m_width, m_height);
+
+    if (m_backgroundImage.isEmpty())
+        return QRectF(0, 0, m_width, m_height);
+    else
+        return m_backGroundImageCache->rect();
 }
 
 QPainterPath CommonItemMECS::shape() const
